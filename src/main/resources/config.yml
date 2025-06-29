@@ -1,0 +1,101 @@
+# TaskForge Configuration File
+# General Plugin Settings
+settings:
+  # Plugin prefix for messages
+  prefix: "&8[&bTaskForge&8] &r"
+  
+  # Language settings
+  language:
+    job_joined: "&aYou have joined the &e%job%&a job!"
+    job_left: "&cYou have left the &e%job%&c job!"
+    job_levelup: "&6Congratulations! You reached Level &e%level%&6 in &e%job%&6!"
+    job_money_earned: "&a+%amount% &7(%job%)"
+    job_exp_earned: "&b+%exp% EXP &7(%job%)"
+    job_already_joined: "&cYou have already joined this job!"
+    job_not_joined: "&cYou haven't joined this job!"
+    job_not_found: "&cJob not found!"
+    max_jobs_reached: "&cYou have reached the maximum number of jobs!"
+    no_permission: "&cYou don't have permission to do this!"
+    config_reloaded: "&aConfiguration reloaded successfully!"
+    player_not_found: "&cPlayer not found!"
+    invalid_number: "&cInvalid number!"
+    invalid_usage: "&cInvalid usage!"
+    error_occurred: "&cAn error occurred!"
+    player_only: "&cThis command can only be used by players!"
+    no_jobs: "&cYou haven't joined any jobs yet!"
+    feature_not_implemented: "&cThis feature is not yet implemented!"
+    level_set: "&aSet &e%player%&a's level in &e%job%&a to &e%level%&a!"
+    exp_added: "&aAdded &e%exp%&a experience to &e%player%&a's &e%job%&a job!"
+    job_reset: "&aReset &e%player%&a's progress in &e%job%&a!"
+    
+  # GUI settings
+  gui:
+    title: "&8Jobs Browser"
+    back_item:
+      material: "ARROW"
+      name: "&cBack"
+      lore:
+        - "&7Click to go back"
+    close_item:
+      material: "BARRIER"
+      name: "&cClose"
+      lore:
+        - "&7Click to close"
+    
+  # Maximum jobs a player can join
+  max_jobs: 3
+  
+  # Enable/disable features
+  features:
+    placeholderapi: true
+    particle_effects: true
+    level_rewards: true
+    chance_system: true
+
+# Leveling Configuration
+leveling:
+  # Base EXP required to go from level 1 to 2
+  base_exp: 100
+  # Multiplier for each level (exponential growth)
+  multiplier: 1.2
+  # Maximum level (0 = no limit)
+  max_level: 100
+
+# Database Configuration
+database:
+  # Database type: SQLITE or MYSQL (future)
+  type: "SQLITE"
+  # SQLite file name (stored in plugin folder)
+  sqlite_file: "taskforge.db"
+  
+  # MySQL settings (for future use)
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "taskforge"
+    username: "root"
+    password: ""
+    table_prefix: "tf_"
+
+# Economy settings
+economy:
+  # Enable money rewards
+  enabled: true
+  # Currency symbol for display
+  currency_symbol: "$"
+
+# Anti-Exploit settings
+anti_exploit:
+  # Enable anti-exploit protection
+  enabled: true
+  # Time in minutes before a placed block becomes "natural" and gives rewards
+  natural_time_minutes: 30
+  # Enable debug messages for anti-exploit
+  debug_messages: false
+
+# Debug settings
+debug:
+  # Enable debug messages in console
+  enabled: false
+  # Log all job actions
+  log_actions: false

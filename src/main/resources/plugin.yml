@@ -1,0 +1,33 @@
+name: TaskForge
+main: id.rnggagib.taskforge.TaskForgePlugin
+version: 1.0-SNAPSHOT
+api-version: 1.20
+author: rnggagib
+description: A comprehensive Jobs plugin with balanced progression
+website: https://github.com/rnggagib/taskforge
+
+depend: [Vault]
+softdepend: [PlaceholderAPI, HeadDatabase]
+
+commands:
+  jobs:
+    description: Main jobs command
+    usage: /jobs <browse|join|leave|stats|top|toggle>
+    permission: taskforge.use
+    permission-message: "&cYou don't have permission to use this command!"
+  taskforgeadmin:
+    description: TaskForge admin commands
+    usage: /taskforgeadmin <reload|setlevel|addexp>
+    permission: taskforge.admin
+    permission-message: "&cYou don't have permission to use this command!"
+
+permissions:
+  taskforge.use:
+    description: Allows use of basic jobs commands
+    default: true
+  taskforge.admin:
+    description: Allows use of admin commands
+    default: op
+  taskforge.job.all:
+    description: Access to all jobs
+    default: true
