@@ -1,0 +1,23 @@
+# Jobs Index Configuration
+# This file defines which job files to load and their order
+
+# List of job files to load (without .yml extension)
+# Order matters for display in GUI
+jobs:
+  - miner       # Miner job configuration (jobs/miner.yml)
+  - lumberjack  # Lumberjack job configuration (jobs/lumberjack.yml)
+  - farmer      # Farmer job configuration (jobs/farmer.yml)
+  - hunter      # Hunter job configuration (jobs/hunter.yml)
+  - fisherman   # Fisherman job configuration (jobs/fisherman.yml)
+  - builder     # Builder job configuration (jobs/builder.yml)
+
+# Job loading settings
+settings:
+  # Whether to load jobs from separate files (true) or from main jobs.yml (false)
+  use_separate_files: true
+  
+  # Whether to validate job configurations on load
+  validate_on_load: true
+  
+  # Whether to show debug messages during job loading
+  debug_loading: true

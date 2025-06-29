@@ -27,6 +27,8 @@ settings:
     level_set: "&aSet &e%player%&a's level in &e%job%&a to &e%level%&a!"
     exp_added: "&aAdded &e%exp%&a experience to &e%player%&a's &e%job%&a job!"
     job_reset: "&aReset &e%player%&a's progress in &e%job%&a!"
+    job_cooldown_active: "&cYou must wait &e%time%&c before leaving another job!"
+    job_cooldown_remaining: "&cCooldown remaining: &e%time%"
     
   # GUI settings
   gui:
@@ -99,3 +101,14 @@ debug:
   enabled: false
   # Log all job actions
   log_actions: false
+
+# Job leave cooldown settings
+job_cooldown:
+  # Enable job leave cooldown
+  enabled: true
+  # Cooldown time before a player can leave and join another job
+  # Format: 1d (days), 1h (hours), 1m (minutes), 1s (seconds)
+  # Examples: "30m", "1h", "2h30m", "24h", "1d"
+  leave_cooldown: "1h"
+  # Whether to show cooldown time remaining in messages
+  show_remaining_time: true

@@ -1,6 +1,8 @@
 package id.rnggagib.taskforge.managers;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -8,6 +10,7 @@ import java.util.logging.Logger;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 
 import id.rnggagib.taskforge.TaskForgePlugin;
@@ -33,11 +36,87 @@ public class JobManager {
     }
     
     /**
-     * Load all jobs from the jobs.yml configuration file
+     * Load all jobs from configuration files
+     * Supports both separate files (new method) and single jobs.yml (legacy)
      */
     public void loadJobsFromConfig() {
         jobs.clear();
         
+        // Check if jobs_index.yml exists and use_separate_files is enabled
+        File jobsIndexFile = new File(plugin.getDataFolder(), "jobs_index.yml");
+        boolean useSeparateFiles = false;
+        
+        if (jobsIndexFile.exists()) {
+            FileConfiguration jobsIndexConfig = YamlConfiguration.loadConfiguration(jobsIndexFile);
+            useSeparateFiles = jobsIndexConfig.getBoolean("settings.use_separate_files", false);
+            boolean debugLoading = jobsIndexConfig.getBoolean("settings.debug_loading", false);
+            
+            if (useSeparateFiles) {
+                logger.info("Loading jobs from separate files...");
+                loadJobsFromSeparateFiles(jobsIndexConfig, debugLoading);
+                return;
+            }
+        }
+        
+        // Fall back to legacy single file method
+        logger.info("Loading jobs from single jobs.yml file...");
+        loadJobsFromSingleFile();
+    }
+    
+    /**
+     * Load jobs from separate files (new method)
+     */
+    private void loadJobsFromSeparateFiles(FileConfiguration jobsIndexConfig, boolean debugLoading) {
+        List<String> jobFileNames = jobsIndexConfig.getStringList("jobs");
+        if (jobFileNames.isEmpty()) {
+            logger.warning("No job files specified in jobs_index.yml!");
+            return;
+        }
+        
+        File jobsFolder = new File(plugin.getDataFolder(), "jobs");
+        if (!jobsFolder.exists()) {
+            logger.severe("Jobs folder does not exist: " + jobsFolder.getPath());
+            return;
+        }
+        
+        int loadedCount = 0;
+        for (String jobFileName : jobFileNames) {
+            File jobFile = new File(jobsFolder, jobFileName + ".yml");
+            
+            if (!jobFile.exists()) {
+                logger.warning("Job file not found: " + jobFile.getPath());
+                continue;
+            }
+            
+            try {
+                if (debugLoading) {
+                    logger.info("Loading job file: " + jobFile.getName());
+                }
+                
+                FileConfiguration jobConfig = YamlConfiguration.loadConfiguration(jobFile);
+                Job job = loadJobFromConfig(jobFileName, jobConfig);
+                
+                if (job != null) {
+                    jobs.put(jobFileName.toLowerCase(), job);
+                    loadedCount++;
+                    logger.info("Loaded job: " + jobFileName);
+                } else {
+                    logger.warning("Failed to load job from file: " + jobFile.getName());
+                }
+                
+            } catch (Exception e) {
+                logger.severe("Error loading job file '" + jobFile.getName() + "': " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        
+        logger.info("Loaded " + loadedCount + "/" + jobFileNames.size() + " jobs from separate files.");
+    }
+    
+    /**
+     * Load jobs from single jobs.yml file (legacy method)
+     */
+    private void loadJobsFromSingleFile() {
         FileConfiguration jobsConfig = plugin.getConfigManager().getJobsConfig();
         ConfigurationSection jobsSection = jobsConfig.getConfigurationSection("jobs");
         
@@ -59,7 +138,36 @@ public class JobManager {
             }
         }
         
-        logger.info("Loaded " + jobs.size() + " jobs successfully.");
+        logger.info("Loaded " + jobs.size() + " jobs from single file.");
+    }
+    
+    /**
+     * Load a job from a separate configuration file
+     */
+    private Job loadJobFromConfig(String jobName, FileConfiguration jobConfig) {
+        // Basic job info - read directly from root of config
+        String displayName = jobConfig.getString("display_name", jobName);
+        String description = jobConfig.getString("description", "No description available.");
+        String playerHeadTexture = jobConfig.getString("player_head_texture", "");
+        
+        // Item icon fallback
+        Material itemIcon = Material.STONE;
+        String itemIconString = jobConfig.getString("item_icon", "STONE");
+        try {
+            itemIcon = Material.valueOf(itemIconString.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            logger.warning("Invalid item icon '" + itemIconString + "' for job " + jobName + ", using STONE");
+        }
+        
+        Job job = new Job(jobName, displayName, description, playerHeadTexture, itemIcon);
+        
+        // Load objectives
+        loadJobObjectives(job, jobConfig.getConfigurationSection("objectives"));
+        
+        // Load level rewards
+        loadLevelRewards(job, jobConfig.getConfigurationSection("level_rewards"));
+        
+        return job;
     }
     
     /**

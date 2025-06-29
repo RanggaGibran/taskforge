@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import id.rnggagib.taskforge.TaskForgePlugin;
 import id.rnggagib.taskforge.gui.JobsGUI;
+import id.rnggagib.taskforge.utils.TimeUtils;
 
 /**
  * Main command handler for /jobs command
@@ -142,7 +143,20 @@ public class JobsCommand implements CommandExecutor, TabCompleter {
             return;
         }
         
+        // Check job cooldown if enabled
+        if (plugin.getConfigManager().isJobCooldownEnabled()) {
+            if (isJobOnCooldown(player, jobName)) {
+                return; // Cooldown message already sent in isJobOnCooldown method
+            }
+        }
+        
+        // Leave the job
         if (plugin.getPlayerDataManager().leaveJob(player.getUniqueId(), jobName)) {
+            // Record the leave timestamp for cooldown tracking
+            if (plugin.getConfigManager().isJobCooldownEnabled()) {
+                plugin.getDatabaseManager().recordJobLeave(player.getUniqueId(), jobName);
+            }
+            
             String message = plugin.getConfigManager().getPrefixedMessage("job_left", "job", jobName);
             player.sendMessage(message);
         } else {
@@ -239,6 +253,46 @@ public class JobsCommand implements CommandExecutor, TabCompleter {
         return plugin.getConfigManager().translateColorCodes(bar.toString());
     }
     
+    /**
+     * Check if a job is on cooldown for a player
+     * @param player The player
+     * @param jobName The job name
+     * @return true if on cooldown, false otherwise
+     */
+    private boolean isJobOnCooldown(Player player, String jobName) {
+        long leaveTimestamp = plugin.getDatabaseManager().getJobLeaveTimestamp(player.getUniqueId(), jobName);
+        
+        // No previous leave record
+        if (leaveTimestamp == 0) {
+            return false;
+        }
+        
+        // Parse cooldown duration from config
+        String cooldownString = plugin.getConfigManager().getJobLeaveCooldown();
+        long cooldownDuration = TimeUtils.parseTimeToMillis(cooldownString);
+        
+        // Check if cooldown has expired
+        if (TimeUtils.isCooldownExpired(leaveTimestamp, cooldownDuration)) {
+            // Cleanup expired cooldown
+            plugin.getDatabaseManager().removeJobCooldown(player.getUniqueId(), jobName);
+            return false;
+        }
+        
+        // Cooldown is still active - send message to player
+        long remainingTime = TimeUtils.getRemainingCooldown(leaveTimestamp, cooldownDuration);
+        String remainingTimeFormatted = TimeUtils.formatTime(remainingTime);
+        
+        if (plugin.getConfigManager().shouldShowRemainingTime()) {
+            String message = plugin.getConfigManager().getPrefixedMessage("job_cooldown_active", "time", remainingTimeFormatted);
+            player.sendMessage(message);
+        } else {
+            String message = plugin.getConfigManager().getPrefixedMessage("job_cooldown_remaining", "time", remainingTimeFormatted);
+            player.sendMessage(message);
+        }
+        
+        return true;
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();

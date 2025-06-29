@@ -104,10 +104,21 @@ public class DatabaseManager {
             "exp_notifications BOOLEAN DEFAULT 1" +
             ")";
         
+        // Job cooldowns table
+        String createJobCooldownsTable = 
+            "CREATE TABLE IF NOT EXISTS job_cooldowns (" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "player_uuid TEXT NOT NULL," +
+            "job_name TEXT NOT NULL," +
+            "leave_timestamp INTEGER NOT NULL," +
+            "UNIQUE(player_uuid, job_name)" +
+            ")";
+        
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createPlayerJobsTable);
             stmt.execute(createPlayerStatsTable);
             stmt.execute(createPlayerSettingsTable);
+            stmt.execute(createJobCooldownsTable);
             logger.info("Database tables created successfully.");
         }
     }
@@ -310,6 +321,77 @@ public class DatabaseManager {
         return topPlayers;
     }
     
+    /**
+     * Record job leave timestamp for cooldown tracking
+     */
+    public void recordJobLeave(UUID playerUUID, String jobName) {
+        String sql = "INSERT OR REPLACE INTO job_cooldowns (player_uuid, job_name, leave_timestamp) VALUES (?, ?, ?)";
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setString(1, playerUUID.toString());
+            stmt.setString(2, jobName.toLowerCase());
+            stmt.setLong(3, System.currentTimeMillis());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            logger.severe("Failed to record job leave for " + playerUUID + ": " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Get job leave timestamp for cooldown checking
+     */
+    public long getJobLeaveTimestamp(UUID playerUUID, String jobName) {
+        String sql = "SELECT leave_timestamp FROM job_cooldowns WHERE player_uuid = ? AND job_name = ?";
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setString(1, playerUUID.toString());
+            stmt.setString(2, jobName.toLowerCase());
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong("leave_timestamp");
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Failed to get job leave timestamp for " + playerUUID + ": " + e.getMessage());
+        }
+        
+        return 0; // No record found
+    }
+    
+    /**
+     * Remove job cooldown record (when cooldown expires or for cleanup)
+     */
+    public void removeJobCooldown(UUID playerUUID, String jobName) {
+        String sql = "DELETE FROM job_cooldowns WHERE player_uuid = ? AND job_name = ?";
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setString(1, playerUUID.toString());
+            stmt.setString(2, jobName.toLowerCase());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            logger.severe("Failed to remove job cooldown for " + playerUUID + ": " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Clean up expired job cooldowns (for maintenance)
+     */
+    public void cleanupExpiredCooldowns(long cooldownDuration) {
+        long expiredBefore = System.currentTimeMillis() - cooldownDuration;
+        String sql = "DELETE FROM job_cooldowns WHERE leave_timestamp < ?";
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setLong(1, expiredBefore);
+            int deleted = stmt.executeUpdate();
+            if (deleted > 0) {
+                logger.info("Cleaned up " + deleted + " expired job cooldowns.");
+            }
+        } catch (SQLException e) {
+            logger.severe("Failed to cleanup expired cooldowns: " + e.getMessage());
+        }
+    }
+
     /**
      * Data class for player job information
      */

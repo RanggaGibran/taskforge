@@ -187,7 +187,7 @@ public class JobDetailGUI implements Listener {
         // Player progress (center position)
         ItemStack progressItem;
         if (headDatabaseAvailable) {
-            progressItem = createPlayerHead("hdb:9926"); // Stats/chart icon
+            progressItem = createPlayerHead("hdb:51667"); // Stats/chart icon
         } else {
             progressItem = new ItemStack(Material.EXPERIENCE_BOTTLE);
         }
@@ -242,7 +242,7 @@ public class JobDetailGUI implements Listener {
             // Leave button with HeadDatabase
             ItemStack leaveButton;
             if (headDatabaseAvailable) {
-                leaveButton = createPlayerHead("hdb:5469"); // Red X or exit icon
+                leaveButton = createPlayerHead("hdb:69026"); // Red X or exit icon
             } else {
                 leaveButton = new ItemStack(Material.RED_CONCRETE);
             }
@@ -264,7 +264,7 @@ public class JobDetailGUI implements Listener {
             // Stats button with HeadDatabase
             ItemStack statsButton;
             if (headDatabaseAvailable) {
-                statsButton = createPlayerHead("hdb:26206"); // Chart/analytics icon
+                statsButton = createPlayerHead("hdb:6258"); // Chart/analytics icon
             } else {
                 statsButton = new ItemStack(Material.BOOK);
             }
@@ -326,7 +326,7 @@ public class JobDetailGUI implements Listener {
         // Objectives button with HeadDatabase
         ItemStack objectivesButton;
         if (headDatabaseAvailable) {
-            objectivesButton = createPlayerHead("hdb:9156"); // Target/bullseye icon
+            objectivesButton = createPlayerHead("hdb:48927"); // Target/bullseye icon
         } else {
             objectivesButton = new ItemStack(Material.TARGET);
         }
@@ -351,7 +351,7 @@ public class JobDetailGUI implements Listener {
         // Level rewards button with HeadDatabase
         ItemStack rewardsButton;
         if (headDatabaseAvailable) {
-            rewardsButton = createPlayerHead("hdb:9279"); // Treasure chest icon
+            rewardsButton = createPlayerHead("hdb:66374"); // Treasure chest icon
         } else {
             rewardsButton = new ItemStack(Material.CHEST);
         }
@@ -418,7 +418,7 @@ public class JobDetailGUI implements Listener {
         // Back button with HeadDatabase
         ItemStack backButton;
         if (headDatabaseAvailable) {
-            backButton = createPlayerHead("hdb:94738"); // Back arrow as requested
+            backButton = createPlayerHead("hdb:69026"); // Back arrow as requested
         } else {
             backButton = new ItemStack(Material.ARROW);
         }
@@ -440,7 +440,7 @@ public class JobDetailGUI implements Listener {
         // Refresh button with HeadDatabase
         ItemStack refreshButton;
         if (headDatabaseAvailable) {
-            refreshButton = createPlayerHead("hdb:6633"); // Refresh icon
+            refreshButton = createPlayerHead("hdb:67690"); // Refresh icon
         } else {
             refreshButton = new ItemStack(Material.LIME_DYE);
         }
@@ -462,7 +462,7 @@ public class JobDetailGUI implements Listener {
         // Close button with HeadDatabase
         ItemStack closeButton;
         if (headDatabaseAvailable) {
-            closeButton = createPlayerHead("hdb:11834"); // Close X icon
+            closeButton = createPlayerHead("hdb:69026"); // Close X icon
         } else {
             closeButton = new ItemStack(Material.BARRIER);
         }

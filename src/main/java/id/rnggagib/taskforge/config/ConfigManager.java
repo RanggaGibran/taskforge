@@ -34,6 +34,10 @@ public class ConfigManager {
         // Save default config files if they don't exist
         saveDefaultConfig("config.yml");
         saveDefaultConfig("jobs.yml");
+        saveDefaultConfig("jobs_index.yml");
+        
+        // Save default jobs folder
+        saveDefaultJobsFolder();
         
         // Load configuration files
         loadConfig();
@@ -76,6 +80,38 @@ public class ConfigManager {
                 }
             } catch (IOException e) {
                 logger.severe("Failed to save default " + fileName + ": " + e.getMessage());
+            }
+        }
+    }
+    
+    /**
+     * Save default jobs folder and individual job files from resources
+     */
+    private void saveDefaultJobsFolder() {
+        File jobsFolder = new File(plugin.getDataFolder(), "jobs");
+        
+        if (!jobsFolder.exists()) {
+            jobsFolder.mkdirs();
+            logger.info("Created jobs folder");
+        }
+        
+        // List of job files to copy
+        String[] jobFiles = {"miner.yml", "lumberjack.yml", "farmer.yml", "hunter.yml", "fisherman.yml", "builder.yml"};
+        
+        for (String jobFile : jobFiles) {
+            File file = new File(jobsFolder, jobFile);
+            
+            if (!file.exists()) {
+                try (InputStream inputStream = plugin.getResource("jobs/" + jobFile)) {
+                    if (inputStream != null) {
+                        Files.copy(inputStream, file.toPath());
+                        logger.info("Created default jobs/" + jobFile);
+                    } else {
+                        logger.warning("Could not find default jobs/" + jobFile + " in plugin resources!");
+                    }
+                } catch (IOException e) {
+                    logger.severe("Failed to save default jobs/" + jobFile + ": " + e.getMessage());
+                }
             }
         }
     }
@@ -222,5 +258,26 @@ public class ConfigManager {
      */
     public boolean isActionLoggingEnabled() {
         return config.getBoolean("debug.log_actions", false);
+    }
+    
+    /**
+     * Check if job cooldown is enabled
+     */
+    public boolean isJobCooldownEnabled() {
+        return config.getBoolean("settings.job_cooldown.enabled", true);
+    }
+    
+    /**
+     * Get job leave cooldown time string
+     */
+    public String getJobLeaveCooldown() {
+        return config.getString("settings.job_cooldown.leave_cooldown", "1h");
+    }
+    
+    /**
+     * Check if remaining time should be shown in cooldown messages
+     */
+    public boolean shouldShowRemainingTime() {
+        return config.getBoolean("settings.job_cooldown.show_remaining_time", true);
     }
 }

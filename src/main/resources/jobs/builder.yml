@@ -1,0 +1,159 @@
+# Builder Job Configuration
+# Construct magnificent structures and shape the world
+
+display_name: "&e🏗 Builder"
+description: "&fConstruct magnificent structures and shape the world."
+player_head_texture: "hdb:103761"
+item_icon: "GOLDEN_PICKAXE"
+
+objectives:
+  PLACE:
+    # Basic building blocks
+    COBBLESTONE:
+      exp: 0.5
+      money: 0.02
+      chance: 70.0
+    STONE:
+      exp: 0.6
+      money: 0.025
+      chance: 72.0
+    STONE_BRICKS:
+      exp: 1.0
+      money: 0.05
+      chance: 75.0
+    
+    # Wood blocks
+    OAK_PLANKS:
+      exp: 0.8
+      money: 0.04
+      chance: 73.0
+    SPRUCE_PLANKS:
+      exp: 0.8
+      money: 0.04
+      chance: 73.0
+    BIRCH_PLANKS:
+      exp: 0.8
+      money: 0.04
+      chance: 73.0
+    JUNGLE_PLANKS:
+      exp: 0.9
+      money: 0.045
+      chance: 74.0
+    ACACIA_PLANKS:
+      exp: 0.9
+      money: 0.045
+      chance: 74.0
+    DARK_OAK_PLANKS:
+      exp: 1.0
+      money: 0.05
+      chance: 75.0
+    MANGROVE_PLANKS:
+      exp: 1.1
+      money: 0.055
+      chance: 76.0
+    CHERRY_PLANKS:
+      exp: 1.2
+      money: 0.06
+      chance: 77.0
+    
+    # Glass
+    GLASS:
+      exp: 1.2
+      money: 0.08
+      chance: 78.0
+    WHITE_STAINED_GLASS:
+      exp: 1.5
+      money: 0.1
+      chance: 80.0
+    BLACK_STAINED_GLASS:
+      exp: 1.5
+      money: 0.1
+      chance: 80.0
+    RED_STAINED_GLASS:
+      exp: 1.5
+      money: 0.1
+      chance: 80.0
+    BLUE_STAINED_GLASS:
+      exp: 1.5
+      money: 0.1
+      chance: 80.0
+    
+    # Concrete
+    WHITE_CONCRETE:
+      exp: 2.0
+      money: 0.15
+      chance: 82.0
+    BLACK_CONCRETE:
+      exp: 2.0
+      money: 0.15
+      chance: 82.0
+    RED_CONCRETE:
+      exp: 2.0
+      money: 0.15
+      chance: 82.0
+    BLUE_CONCRETE:
+      exp: 2.0
+      money: 0.15
+      chance: 82.0
+    GREEN_CONCRETE:
+      exp: 2.0
+      money: 0.15
+      chance: 82.0
+    YELLOW_CONCRETE:
+      exp: 2.0
+      money: 0.15
+      chance: 82.0
+    
+    # Terracotta
+    TERRACOTTA:
+      exp: 1.8
+      money: 0.12
+      chance: 80.0
+    WHITE_TERRACOTTA:
+      exp: 2.0
+      money: 0.14
+      chance: 81.0
+    BLACK_TERRACOTTA:
+      exp: 2.0
+      money: 0.14
+      chance: 81.0
+    
+    # Expensive blocks
+    DIAMOND_BLOCK:
+      exp: 15.0
+      money: 5.0
+      chance: 95.0
+    EMERALD_BLOCK:
+      exp: 20.0
+      money: 8.0
+      chance: 98.0
+    GOLD_BLOCK:
+      exp: 8.0
+      money: 2.0
+      chance: 88.0
+    IRON_BLOCK:
+      exp: 5.0
+      money: 1.0
+      chance: 85.0
+
+level_rewards:
+  '5':
+    type: "MONEY"
+    value: 150.0
+    message: "&aCongratulations! You earned &e$150&a for reaching Builder Level 5!"
+  '10':
+    type: "MONEY"
+    value: 350.0
+    message: "&aCongratulations! You earned &e$350&a for reaching Builder Level 10!"
+  '25':
+    type: "MONEY"
+    value: 1300.0
+    message: "&aCongratulations! You earned &e$1300&a for reaching Builder Level 25!"
+  '50':
+    type: "EFFECT"
+    value: "PARTICLE:BLOCK_CRACK"
+    message: "&dAMAZING! You reached Level 50 and unlocked special particle effects!"
+  '100':
+    type: "TITLE"
+    value: "&e[Master Builder]"
+    message: "&6LEGENDARY! You have become a Master Builder!"

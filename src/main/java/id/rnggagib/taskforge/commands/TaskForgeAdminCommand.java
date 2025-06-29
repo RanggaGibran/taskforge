@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import id.rnggagib.taskforge.TaskForgePlugin;
+import id.rnggagib.taskforge.utils.TimeUtils;
 
 /**
  * Admin command handler for /taskforgeadmin command
@@ -77,6 +78,24 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 showPlayerInfo(sender, args[1]);
+                break;
+                
+            case "clearcooldown":
+                if (args.length < 3) {
+                    sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_usage") + 
+                                     " /taskforgeadmin clearcooldown <player> <job>");
+                    return true;
+                }
+                clearJobCooldown(sender, args[1], args[2]);
+                break;
+                
+            case "checkcooldown":
+                if (args.length < 3) {
+                    sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_usage") + 
+                                     " /taskforgeadmin checkcooldown <player> <job>");
+                    return true;
+                }
+                checkJobCooldown(sender, args[1], args[2]);
                 break;
                 
             default:
@@ -279,6 +298,71 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin info <player> &8- &7Show player's job information"));
     }
     
+    /**
+     * Clear job cooldown for a player
+     */
+    private void clearJobCooldown(CommandSender sender, String playerName, String jobName) {
+        @SuppressWarnings("deprecation")
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        
+        if (!offlinePlayer.hasPlayedBefore()) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("player_not_found"));
+            return;
+        }
+        
+        if (!plugin.getJobManager().jobExists(jobName)) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("job_not_found"));
+            return;
+        }
+        
+        // Remove cooldown from database
+        plugin.getDatabaseManager().removeJobCooldown(offlinePlayer.getUniqueId(), jobName);
+        
+        sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                          "&aCleared job cooldown for &e" + playerName + "&a in job &e" + jobName + "&a!");
+    }
+    
+    /**
+     * Check job cooldown status for a player
+     */
+    private void checkJobCooldown(CommandSender sender, String playerName, String jobName) {
+        @SuppressWarnings("deprecation")
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        
+        if (!offlinePlayer.hasPlayedBefore()) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("player_not_found"));
+            return;
+        }
+        
+        if (!plugin.getJobManager().jobExists(jobName)) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("job_not_found"));
+            return;
+        }
+        
+        long leaveTimestamp = plugin.getDatabaseManager().getJobLeaveTimestamp(offlinePlayer.getUniqueId(), jobName);
+        
+        if (leaveTimestamp == 0) {
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&e" + playerName + "&a has no cooldown for job &e" + jobName + "&a.");
+            return;
+        }
+        
+        // Parse cooldown duration from config
+        String cooldownString = plugin.getConfigManager().getJobLeaveCooldown();
+        long cooldownDuration = TimeUtils.parseTimeToMillis(cooldownString);
+        
+        if (TimeUtils.isCooldownExpired(leaveTimestamp, cooldownDuration)) {
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&e" + playerName + "&a's cooldown for job &e" + jobName + "&a has expired.");
+        } else {
+            long remainingTime = TimeUtils.getRemainingCooldown(leaveTimestamp, cooldownDuration);
+            String remainingTimeFormatted = TimeUtils.formatTime(remainingTime);
+            
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&e" + playerName + "&a has &c" + remainingTimeFormatted + "&a remaining for job &e" + jobName + "&a.");
+        }
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
@@ -289,7 +373,7 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
         
         if (args.length == 1) {
             // First argument - subcommands
-            String[] subCommands = {"reload", "setlevel", "addexp", "resetjob", "info"};
+            String[] subCommands = {"reload", "setlevel", "addexp", "resetjob", "info", "clearcooldown", "checkcooldown"};
             for (String subCommand : subCommands) {
                 if (subCommand.toLowerCase().startsWith(args[0].toLowerCase())) {
                     completions.add(subCommand);
@@ -299,7 +383,8 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
             String subCommand = args[0].toLowerCase();
             
             if ("setlevel".equals(subCommand) || "addexp".equals(subCommand) || 
-                "resetjob".equals(subCommand) || "info".equals(subCommand)) {
+                "resetjob".equals(subCommand) || "info".equals(subCommand) ||
+                "clearcooldown".equals(subCommand) || "checkcooldown".equals(subCommand)) {
                 // Player names
                 for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
                     String playerName = player.getName();
@@ -311,7 +396,8 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
         } else if (args.length == 3) {
             String subCommand = args[0].toLowerCase();
             
-            if ("setlevel".equals(subCommand) || "addexp".equals(subCommand) || "resetjob".equals(subCommand)) {
+            if ("setlevel".equals(subCommand) || "addexp".equals(subCommand) || "resetjob".equals(subCommand) ||
+                "clearcooldown".equals(subCommand) || "checkcooldown".equals(subCommand)) {
                 // Job names
                 for (String jobName : plugin.getJobManager().getJobNames()) {
                     if (jobName.toLowerCase().startsWith(args[2].toLowerCase())) {

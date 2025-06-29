@@ -1,0 +1,113 @@
+# Fisherman Job Configuration
+# Cast your line and catch the treasures of the deep
+
+display_name: "&9🎣 Fisherman"
+description: "&fCast your line and catch the treasures of the deep."
+player_head_texture: "hdb:23756"
+item_icon: "FISHING_ROD"
+
+objectives:
+  FISH:
+    # Fish
+    COD:
+      exp: 1.5
+      money: 0.15
+      chance: 80.0
+    SALMON:
+      exp: 1.8
+      money: 0.18
+      chance: 78.0
+    TROPICAL_FISH:
+      exp: 2.0
+      money: 0.25
+      chance: 75.0
+    PUFFERFISH:
+      exp: 2.5
+      money: 0.3
+      chance: 70.0
+    
+    # Treasure
+    BOW:
+      exp: 10.0
+      money: 2.0
+      chance: 95.0
+    ENCHANTED_BOOK:
+      exp: 15.0
+      money: 5.0
+      chance: 98.0
+    FISHING_ROD:
+      exp: 8.0
+      money: 1.5
+      chance: 92.0
+    NAME_TAG:
+      exp: 12.0
+      money: 3.0
+      chance: 95.0
+    NAUTILUS_SHELL:
+      exp: 20.0
+      money: 8.0
+      chance: 98.0
+    SADDLE:
+      exp: 12.0
+      money: 4.0
+      chance: 95.0
+    
+    # Junk (lower rewards)
+    LEATHER_BOOTS:
+      exp: 0.5
+      money: 0.02
+      chance: 40.0
+    LEATHER:
+      exp: 0.3
+      money: 0.01
+      chance: 35.0
+    BONE:
+      exp: 0.4
+      money: 0.015
+      chance: 38.0
+    STICK:
+      exp: 0.2
+      money: 0.005
+      chance: 30.0
+    STRING:
+      exp: 0.3
+      money: 0.01
+      chance: 35.0
+    BOWL:
+      exp: 0.3
+      money: 0.01
+      chance: 35.0
+    ROTTEN_FLESH:
+      exp: 0.2
+      money: 0.005
+      chance: 30.0
+    TRIPWIRE_HOOK:
+      exp: 0.5
+      money: 0.02
+      chance: 40.0
+    POTION:
+      exp: 1.0
+      money: 0.1
+      chance: 60.0
+
+level_rewards:
+  '5':
+    type: "MONEY"
+    value: 120.0
+    message: "&aCongratulations! You earned &e$120&a for reaching Fisherman Level 5!"
+  '10':
+    type: "MONEY"
+    value: 280.0
+    message: "&aCongratulations! You earned &e$280&a for reaching Fisherman Level 10!"
+  '25':
+    type: "MONEY"
+    value: 1100.0
+    message: "&aCongratulations! You earned &e$1100&a for reaching Fisherman Level 25!"
+  '50':
+    type: "EFFECT"
+    value: "PARTICLE:WATER_SPLASH"
+    message: "&dAMAZING! You reached Level 50 and unlocked special particle effects!"
+  '100':
+    type: "TITLE"
+    value: "&9[Master Fisherman]"
+    message: "&6LEGENDARY! You have become a Master Fisherman!"

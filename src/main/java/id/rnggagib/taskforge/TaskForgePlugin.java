@@ -62,6 +62,9 @@ public class TaskForgePlugin extends JavaPlugin {
         // Setup PlaceholderAPI if available
         setupPlaceholderAPI();
         
+        // Setup scheduled tasks
+        setupScheduledTasks();
+        
         LOGGER.info("TaskForge has been enabled successfully!");
     }
     
@@ -174,6 +177,28 @@ public class TaskForgePlugin extends JavaPlugin {
             LOGGER.info("PlaceholderAPI integration enabled.");
         } else {
             LOGGER.info("PlaceholderAPI not found, placeholder features disabled.");
+        }
+    }
+    
+    /**
+     * Setup scheduled tasks for plugin maintenance
+     */
+    private void setupScheduledTasks() {
+        // Job cooldown cleanup task - runs every hour
+        if (configManager.isJobCooldownEnabled()) {
+            String cooldownString = configManager.getJobLeaveCooldown();
+            long cooldownDuration = id.rnggagib.taskforge.utils.TimeUtils.parseTimeToMillis(cooldownString);
+            
+            // Schedule cleanup task to run every hour (72000 ticks)
+            Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+                try {
+                    databaseManager.cleanupExpiredCooldowns(cooldownDuration);
+                } catch (Exception e) {
+                    LOGGER.warning("Error during cooldown cleanup: " + e.getMessage());
+                }
+            }, 72000L, 72000L); // 1 hour = 72000 ticks
+            
+            LOGGER.info("Job cooldown cleanup task scheduled (every hour).");
         }
     }
     

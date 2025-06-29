@@ -1,0 +1,173 @@
+# Miner Job Configuration
+# Focus on mining ores and stones
+
+display_name: "&7⛏ Miner"
+description: "&fA job for those who love digging deep for earth's treasures."
+player_head_texture: "hdb:118921"
+item_icon: "DIAMOND_PICKAXE"
+
+objectives:
+  BREAK:
+    # Basic stones - Lower chance for common materials
+    STONE:
+      exp: 0.5
+      money: 0.02
+      chance: 10.0
+    COBBLESTONE:
+      exp: 0.3
+      money: 0.01
+      chance: 8.0
+    DEEPSLATE:
+      exp: 0.8
+      money: 0.03
+      chance: 12.0
+    
+    # Ores - Coal - More reasonable chances
+    COAL_ORE:
+      exp: 1.2
+      money: 0.1
+      chance: 25.0
+    DEEPSLATE_COAL_ORE:
+      exp: 1.5
+      money: 0.12
+      chance: 30.0
+      
+    # Ores - Iron - Moderate chances
+    IRON_ORE:
+      exp: 2.0
+      money: 0.25
+      chance: 35.0
+    DEEPSLATE_IRON_ORE:
+      exp: 2.5
+      money: 0.3
+      chance: 40.0
+      
+    # Ores - Gold
+    GOLD_ORE:
+      exp: 3.0
+      money: 0.5
+      chance: 45.0
+    DEEPSLATE_GOLD_ORE:
+      exp: 3.5
+      money: 0.6
+      chance: 50.0
+    NETHER_GOLD_ORE:
+      exp: 2.8
+      money: 0.45
+      chance: 47.0
+      
+    # Ores - Diamond
+    DIAMOND_ORE:
+      exp: 8.0
+      money: 2.0
+      chance: 60.0
+    DEEPSLATE_DIAMOND_ORE:
+      exp: 10.0
+      money: 2.5
+      chance: 65.0
+      
+    # Ores - Emerald
+    EMERALD_ORE:
+      exp: 12.0
+      money: 5.0
+      chance: 70.0
+    DEEPSLATE_EMERALD_ORE:
+      exp: 15.0
+      money: 6.0
+      chance: 90.0
+      
+    # Ores - Redstone
+    REDSTONE_ORE:
+      exp: 1.8
+      money: 0.3
+      chance: 55.0
+    DEEPSLATE_REDSTONE_ORE:
+      exp: 2.2
+      money: 0.35
+      chance: 60.0
+      
+    # Ores - Lapis
+    LAPIS_ORE:
+      exp: 2.5
+      money: 0.4
+      chance: 50.0
+    DEEPSLATE_LAPIS_ORE:
+      exp: 3.0
+      money: 0.5
+      chance: 55.0
+      
+    # Ores - Copper
+    COPPER_ORE:
+      exp: 1.0
+      money: 0.15
+      chance: 70.0
+    DEEPSLATE_COPPER_ORE:
+      exp: 1.3
+      money: 0.18
+      chance: 70.0
+      
+    # Ancient Debris
+    ANCIENT_DEBRIS:
+      exp: 25.0
+      money: 10.0
+      chance: 95.0
+      
+    # Other blocks
+    DIRT:
+      exp: 0.1
+      money: 0.005
+      chance: 30.0
+    GRAVEL:
+      exp: 0.3
+      money: 0.01
+      chance: 40.0
+    SAND:
+      exp: 0.2
+      money: 0.008
+      chance: 35.0
+    ANDESITE:
+      exp: 0.4
+      money: 0.015
+      chance: 45.0
+    DIORITE:
+      exp: 0.4
+      money: 0.015
+      chance: 45.0
+    GRANITE:
+      exp: 0.4
+      money: 0.015
+      chance: 45.0
+    NETHERRACK:
+      exp: 0.3
+      money: 0.01
+      chance: 40.0
+    END_STONE:
+      exp: 0.8
+      money: 0.05
+      chance: 55.0
+
+level_rewards:
+  '5':
+    type: "MONEY"
+    value: 100.0
+    message: "&aCongratulations! You earned &e$100&a for reaching Miner Level 5!"
+  '10':
+    type: "MONEY"
+    value: 250.0
+    message: "&aCongratulations! You earned &e$250&a for reaching Miner Level 10!"
+  '25':
+    type: "MONEY"
+    value: 1000.0
+    message: "&aCongratulations! You earned &e$1000&a for reaching Miner Level 25!"
+  '50':
+    type: "EFFECT"
+    value: "PARTICLE:FIREWORKS_SPARK"
+    message: "&dAMAZING! You reached Level 50 and unlocked special particle effects!"
+  '75':
+    type: "MONEY"
+    value: 5000.0
+    message: "&6INCREDIBLE! You earned &e$5000&6 for reaching Miner Level 75!"
+  '100':
+    type: "TITLE"
+    value: "&7[Master Miner]"
+    message: "&6LEGENDARY! You have become a Master Miner!"

@@ -1,0 +1,197 @@
+# Lumberjack Job Configuration
+# Specialized in cutting down trees and gathering wood
+
+display_name: "&2🪓 Lumberjack"
+description: "&fSpecialized in cutting down trees and gathering wood."
+player_head_texture: "hdb:107336"
+item_icon: "DIAMOND_AXE"
+
+objectives:
+  BREAK:
+    # Oak - Reduced chances for common wood
+    OAK_LOG:
+      exp: 1.0
+      money: 0.1
+      chance: 20.0
+    OAK_WOOD:
+      exp: 1.0
+      money: 0.1
+      chance: 20.0
+    STRIPPED_OAK_LOG:
+      exp: 1.2
+      money: 0.12
+      chance: 25.0
+    STRIPPED_OAK_WOOD:
+      exp: 1.2
+      money: 0.12
+      chance: 25.0
+      
+    # Birch - Moderate chances
+    BIRCH_LOG:
+      exp: 1.1
+      money: 0.11
+      chance: 22.0
+    BIRCH_WOOD:
+      exp: 1.1
+      money: 0.11
+      chance: 22.0
+    STRIPPED_BIRCH_LOG:
+      exp: 1.3
+      money: 0.13
+      chance: 27.0
+    STRIPPED_BIRCH_WOOD:
+      exp: 1.3
+      money: 0.13
+      chance: 52.0
+      
+    # Spruce
+    SPRUCE_LOG:
+      exp: 1.2
+      money: 0.12
+      chance: 45.0
+    SPRUCE_WOOD:
+      exp: 1.2
+      money: 0.12
+      chance: 45.0
+    STRIPPED_SPRUCE_LOG:
+      exp: 1.4
+      money: 0.14
+      chance: 55.0
+    STRIPPED_SPRUCE_WOOD:
+      exp: 1.4
+      money: 0.14
+      chance: 55.0
+      
+    # Jungle
+    JUNGLE_LOG:
+      exp: 1.5
+      money: 0.15
+      chance: 60.0
+    JUNGLE_WOOD:
+      exp: 1.5
+      money: 0.15
+      chance: 60.0
+    STRIPPED_JUNGLE_LOG:
+      exp: 1.7
+      money: 0.17
+      chance: 78.0
+    STRIPPED_JUNGLE_WOOD:
+      exp: 1.7
+      money: 0.17
+      chance: 78.0
+      
+    # Acacia
+    ACACIA_LOG:
+      exp: 1.3
+      money: 0.13
+      chance: 76.0
+    ACACIA_WOOD:
+      exp: 1.3
+      money: 0.13
+      chance: 76.0
+    STRIPPED_ACACIA_LOG:
+      exp: 1.5
+      money: 0.15
+      chance: 76.0
+    STRIPPED_ACACIA_WOOD:
+      exp: 1.5
+      money: 0.15
+      chance: 76.0
+      
+    # Dark Oak
+    DARK_OAK_LOG:
+      exp: 1.6
+      money: 0.16
+      chance: 80.0
+    DARK_OAK_WOOD:
+      exp: 1.6
+      money: 0.16
+      chance: 80.0
+    STRIPPED_DARK_OAK_LOG:
+      exp: 1.8
+      money: 0.18
+      chance: 80.0
+    STRIPPED_DARK_OAK_WOOD:
+      exp: 1.8
+      money: 0.18
+      chance: 80.0
+      
+    # Mangrove
+    MANGROVE_LOG:
+      exp: 1.8
+      money: 0.18
+      chance: 82.0
+    MANGROVE_WOOD:
+      exp: 1.8
+      money: 0.18
+      chance: 82.0
+    STRIPPED_MANGROVE_LOG:
+      exp: 2.0
+      money: 0.2
+      chance: 82.0
+    STRIPPED_MANGROVE_WOOD:
+      exp: 2.0
+      money: 0.2
+      chance: 82.0
+    MANGROVE_ROOTS:
+      exp: 1.0
+      money: 0.08
+      chance: 70.0
+      
+    # Cherry (1.20+)
+    CHERRY_LOG:
+      exp: 1.9
+      money: 0.19
+      chance: 83.0
+    CHERRY_WOOD:
+      exp: 1.9
+      money: 0.19
+      chance: 83.0
+    STRIPPED_CHERRY_LOG:
+      exp: 2.1
+      money: 0.21
+      chance: 83.0
+    STRIPPED_CHERRY_WOOD:
+      exp: 2.1
+      money: 0.21
+      chance: 83.0
+      
+    # Nether stems
+    CRIMSON_STEM:
+      exp: 2.5
+      money: 0.3
+      chance: 85.0
+    WARPED_STEM:
+      exp: 2.5
+      money: 0.3
+      chance: 85.0
+    STRIPPED_CRIMSON_STEM:
+      exp: 2.8
+      money: 0.35
+      chance: 85.0
+    STRIPPED_WARPED_STEM:
+      exp: 2.8
+      money: 0.35
+      chance: 85.0
+
+level_rewards:
+  '5':
+    type: "MONEY"
+    value: 100.0
+    message: "&aCongratulations! You earned &e$100&a for reaching Lumberjack Level 5!"
+  '10':
+    type: "MONEY"
+    value: 250.0
+    message: "&aCongratulations! You earned &e$250&a for reaching Lumberjack Level 10!"
+  '25':
+    type: "MONEY"
+    value: 1000.0
+    message: "&aCongratulations! You earned &e$1000&a for reaching Lumberjack Level 25!"
+  '50':
+    type: "EFFECT"
+    value: "PARTICLE:HAPPY_VILLAGER"
+    message: "&dAMAZING! You reached Level 50 and unlocked special particle effects!"
+  '100':
+    type: "TITLE"
+    value: "&2[Master Lumberjack]"
+    message: "&6LEGENDARY! You have become a Master Lumberjack!"

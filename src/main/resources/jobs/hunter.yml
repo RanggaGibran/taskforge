@@ -1,0 +1,145 @@
+# Hunter Job Configuration
+# Hunt dangerous creatures and protect the innocent
+
+display_name: "&c⚔ Hunter"
+description: "&fHunt dangerous creatures and protect the innocent."
+player_head_texture: "hdb:108508"
+item_icon: "DIAMOND_SWORD"
+
+objectives:
+  KILL:
+    # Hostile mobs
+    ZOMBIE:
+      exp: 2.0
+      money: 0.2
+      chance: 85.0
+    SKELETON:
+      exp: 2.5
+      money: 0.25
+      chance: 85.0
+    CREEPER:
+      exp: 3.0
+      money: 0.3
+      chance: 88.0
+    SPIDER:
+      exp: 2.2
+      money: 0.22
+      chance: 82.0
+    ENDERMAN:
+      exp: 5.0
+      money: 0.8
+      chance: 90.0
+    WITCH:
+      exp: 4.0
+      money: 0.5
+      chance: 88.0
+    PILLAGER:
+      exp: 3.5
+      money: 0.4
+      chance: 87.0
+    VINDICATOR:
+      exp: 4.5
+      money: 0.6
+      chance: 90.0
+    EVOKER:
+      exp: 8.0
+      money: 1.5
+      chance: 95.0
+    VEX:
+      exp: 3.0
+      money: 0.35
+      chance: 85.0
+    RAVAGER:
+      exp: 10.0
+      money: 2.0
+      chance: 95.0
+    
+    # Nether mobs
+    ZOMBIE_PIGMAN:
+      exp: 3.5
+      money: 0.4
+      chance: 85.0
+    BLAZE:
+      exp: 4.0
+      money: 0.6
+      chance: 88.0
+    GHAST:
+      exp: 6.0
+      money: 1.0
+      chance: 92.0
+    WITHER_SKELETON:
+      exp: 5.0
+      money: 0.8
+      chance: 90.0
+    MAGMA_CUBE:
+      exp: 2.5
+      money: 0.3
+      chance: 80.0
+    HOGLIN:
+      exp: 4.5
+      money: 0.7
+      chance: 88.0
+    
+    # End mobs
+    ENDERMITE:
+      exp: 2.0
+      money: 0.25
+      chance: 80.0
+    SHULKER:
+      exp: 6.0
+      money: 1.2
+      chance: 92.0
+    
+    # Bosses
+    ENDER_DRAGON:
+      exp: 100.0
+      money: 50.0
+      chance: 100.0
+    WITHER:
+      exp: 75.0
+      money: 35.0
+      chance: 100.0
+    WARDEN:
+      exp: 50.0
+      money: 25.0
+      chance: 100.0
+    
+    # Passive mobs (lower rewards)
+    COW:
+      exp: 1.0
+      money: 0.1
+      chance: 70.0
+    PIG:
+      exp: 1.0
+      money: 0.1
+      chance: 70.0
+    CHICKEN:
+      exp: 0.8
+      money: 0.08
+      chance: 65.0
+    SHEEP:
+      exp: 1.0
+      money: 0.1
+      chance: 70.0
+
+level_rewards:
+  '5':
+    type: "MONEY"
+    value: 150.0
+    message: "&aCongratulations! You earned &e$150&a for reaching Hunter Level 5!"
+  '10':
+    type: "MONEY"
+    value: 300.0
+    message: "&aCongratulations! You earned &e$300&a for reaching Hunter Level 10!"
+  '25':
+    type: "MONEY"
+    value: 1200.0
+    message: "&aCongratulations! You earned &e$1200&a for reaching Hunter Level 25!"
+  '50':
+    type: "EFFECT"
+    value: "PARTICLE:FLAME"
+    message: "&dAMAZING! You reached Level 50 and unlocked special particle effects!"
+  '100':
+    type: "TITLE"
+    value: "&c[Master Hunter]"
+    message: "&6LEGENDARY! You have become a Master Hunter!"

@@ -17,7 +17,7 @@ commands:
     permission-message: "&cYou don't have permission to use this command!"
   taskforgeadmin:
     description: TaskForge admin commands
-    usage: /taskforgeadmin <reload|setlevel|addexp>
+    usage: /taskforgeadmin <reload|setlevel|addexp|resetjob|info|clearcooldown|checkcooldown>
     permission: taskforge.admin
     permission-message: "&cYou don't have permission to use this command!"
 
