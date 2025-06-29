@@ -224,10 +224,52 @@ public class JobManager {
                 if (targetSection == null) continue;
                 
                 double exp = targetSection.getDouble("exp", 0.0);
-                double money = targetSection.getDouble("money", 0.0);
                 double chance = targetSection.getDouble("chance", 100.0);
                 
-                JobObjective objective = new JobObjective(exp, money, chance);
+                // Parse money - support both single value and range format
+                JobObjective objective;
+                if (targetSection.contains("money")) {
+                    Object moneyValue = targetSection.get("money");
+                    if (moneyValue instanceof String) {
+                        String moneyStr = (String) moneyValue;
+                        if (moneyStr.contains("-")) {
+                            // Range format: "0.25-0.50"
+                            String[] parts = moneyStr.split("-");
+                            if (parts.length == 2) {
+                                try {
+                                    double minMoney = Double.parseDouble(parts[0].trim());
+                                    double maxMoney = Double.parseDouble(parts[1].trim());
+                                    objective = new JobObjective(exp, minMoney, maxMoney, chance);
+                                } catch (NumberFormatException e) {
+                                    logger.warning("Invalid money range format in " + job.getName() + 
+                                                 " for " + actionTypeName + "." + targetName + ": " + moneyStr);
+                                    objective = new JobObjective(exp, 0.0, chance);
+                                }
+                            } else {
+                                logger.warning("Invalid money range format in " + job.getName() + 
+                                             " for " + actionTypeName + "." + targetName + ": " + moneyStr);
+                                objective = new JobObjective(exp, 0.0, chance);
+                            }
+                        } else {
+                            // Single value as string
+                            try {
+                                double money = Double.parseDouble(moneyStr);
+                                objective = new JobObjective(exp, money, chance);
+                            } catch (NumberFormatException e) {
+                                logger.warning("Invalid money value in " + job.getName() + 
+                                             " for " + actionTypeName + "." + targetName + ": " + moneyStr);
+                                objective = new JobObjective(exp, 0.0, chance);
+                            }
+                        }
+                    } else {
+                        // Traditional numeric value
+                        double money = targetSection.getDouble("money", 0.0);
+                        objective = new JobObjective(exp, money, chance);
+                    }
+                } else {
+                    // No money specified
+                    objective = new JobObjective(exp, 0.0, chance);
+                }
                 
                 // Determine target object type
                 Object target = parseTarget(actionType, targetName);

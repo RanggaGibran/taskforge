@@ -11,139 +11,139 @@ objectives:
     # Basic stones - Lower chance for common materials
     STONE:
       exp: 0.5
-      money: 0.02
+      money: "0.01-0.03"
       chance: 10.0
     COBBLESTONE:
       exp: 0.3
-      money: 0.01
+      money: "0.005-0.015"
       chance: 8.0
     DEEPSLATE:
       exp: 0.8
-      money: 0.03
+      money: "0.02-0.04"
       chance: 12.0
     
     # Ores - Coal - More reasonable chances
     COAL_ORE:
       exp: 1.2
-      money: 0.1
+      money: "0.08-0.12"
       chance: 25.0
     DEEPSLATE_COAL_ORE:
       exp: 1.5
-      money: 0.12
+      money: "0.10-0.15"
       chance: 30.0
       
     # Ores - Iron - Moderate chances
     IRON_ORE:
       exp: 2.0
-      money: 0.25
+      money: "0.20-0.30"
       chance: 35.0
     DEEPSLATE_IRON_ORE:
       exp: 2.5
-      money: 0.3
+      money: "0.25-0.35"
       chance: 40.0
       
     # Ores - Gold
     GOLD_ORE:
       exp: 3.0
-      money: 0.5
+      money: "0.40-0.60"
       chance: 45.0
     DEEPSLATE_GOLD_ORE:
       exp: 3.5
-      money: 0.6
+      money: "0.50-0.70"
       chance: 50.0
     NETHER_GOLD_ORE:
       exp: 2.8
-      money: 0.45
+      money: "0.35-0.55"
       chance: 47.0
       
     # Ores - Diamond
     DIAMOND_ORE:
       exp: 8.0
-      money: 2.0
+      money: "1.50-2.50"
       chance: 60.0
     DEEPSLATE_DIAMOND_ORE:
       exp: 10.0
-      money: 2.5
+      money: "2.00-3.00"
       chance: 65.0
       
     # Ores - Emerald
     EMERALD_ORE:
       exp: 12.0
-      money: 5.0
+      money: "4.00-6.00"
       chance: 70.0
     DEEPSLATE_EMERALD_ORE:
       exp: 15.0
-      money: 6.0
+      money: "5.00-7.00"
       chance: 90.0
       
     # Ores - Redstone
     REDSTONE_ORE:
       exp: 1.8
-      money: 0.3
+      money: "0.25-0.35"
       chance: 55.0
     DEEPSLATE_REDSTONE_ORE:
       exp: 2.2
-      money: 0.35
+      money: "0.30-0.40"
       chance: 60.0
       
     # Ores - Lapis
     LAPIS_ORE:
       exp: 2.5
-      money: 0.4
+      money: "0.30-0.50"
       chance: 50.0
     DEEPSLATE_LAPIS_ORE:
       exp: 3.0
-      money: 0.5
+      money: "0.40-0.60"
       chance: 55.0
       
     # Ores - Copper
     COPPER_ORE:
       exp: 1.0
-      money: 0.15
+      money: "0.10-0.20"
       chance: 70.0
     DEEPSLATE_COPPER_ORE:
       exp: 1.3
-      money: 0.18
+      money: "0.13-0.23"
       chance: 70.0
       
     # Ancient Debris
     ANCIENT_DEBRIS:
       exp: 25.0
-      money: 10.0
+      money: "8.00-12.00"
       chance: 95.0
       
     # Other blocks
     DIRT:
       exp: 0.1
-      money: 0.005
+      money: "0.003-0.007"
       chance: 30.0
     GRAVEL:
       exp: 0.3
-      money: 0.01
+      money: "0.008-0.012"
       chance: 40.0
     SAND:
       exp: 0.2
-      money: 0.008
+      money: "0.006-0.010"
       chance: 35.0
     ANDESITE:
       exp: 0.4
-      money: 0.015
+      money: "0.012-0.018"
       chance: 45.0
     DIORITE:
       exp: 0.4
-      money: 0.015
+      money: "0.012-0.018"
       chance: 45.0
     GRANITE:
       exp: 0.4
-      money: 0.015
+      money: "0.012-0.018"
       chance: 45.0
     NETHERRACK:
       exp: 0.3
-      money: 0.01
+      money: "0.008-0.012"
       chance: 40.0
     END_STONE:
       exp: 0.8
-      money: 0.05
+      money: "0.04-0.06"
       chance: 55.0
 
 level_rewards:

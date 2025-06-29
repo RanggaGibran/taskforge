@@ -228,7 +228,7 @@ public class ObjectivesGUI implements Listener {
             lore.add(plugin.getConfigManager().translateColorCodes("&7Action: &6" + actionType.name()));
             lore.add("");
             lore.add(plugin.getConfigManager().translateColorCodes("&b⭐ Experience: &f" + String.format("%.1f", objective.getExperience())));
-            lore.add(plugin.getConfigManager().translateColorCodes("&a💰 Money: &f$" + String.format("%.2f", objective.getMoney())));
+            lore.add(plugin.getConfigManager().translateColorCodes("&a💰 Money: &f" + objective.getMoneyDisplay()));
             lore.add(plugin.getConfigManager().translateColorCodes("&e🎲 Chance: &f" + String.format("%.1f%%", objective.getChance())));
             lore.add("");
             

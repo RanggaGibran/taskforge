@@ -11,83 +11,83 @@ objectives:
     # Fish
     COD:
       exp: 1.5
-      money: 0.15
+      money: "0.12-0.18"
       chance: 80.0
     SALMON:
       exp: 1.8
-      money: 0.18
+      money: "0.15-0.21"
       chance: 78.0
     TROPICAL_FISH:
       exp: 2.0
-      money: 0.25
+      money: "0.20-0.30"
       chance: 75.0
     PUFFERFISH:
       exp: 2.5
-      money: 0.3
+      money: "0.25-0.35"
       chance: 70.0
     
     # Treasure
     BOW:
       exp: 10.0
-      money: 2.0
+      money: "1.50-2.50"
       chance: 95.0
     ENCHANTED_BOOK:
       exp: 15.0
-      money: 5.0
+      money: "4.00-6.00"
       chance: 98.0
     FISHING_ROD:
       exp: 8.0
-      money: 1.5
+      money: "1.20-1.80"
       chance: 92.0
     NAME_TAG:
       exp: 12.0
-      money: 3.0
+      money: "2.50-3.50"
       chance: 95.0
     NAUTILUS_SHELL:
       exp: 20.0
-      money: 8.0
+      money: "6.00-10.00"
       chance: 98.0
     SADDLE:
       exp: 12.0
-      money: 4.0
+      money: "3.00-5.00"
       chance: 95.0
     
     # Junk (lower rewards)
     LEATHER_BOOTS:
       exp: 0.5
-      money: 0.02
+      money: "0.015-0.025"
       chance: 40.0
     LEATHER:
       exp: 0.3
-      money: 0.01
+      money: "0.008-0.012"
       chance: 35.0
     BONE:
       exp: 0.4
-      money: 0.015
+      money: "0.012-0.018"
       chance: 38.0
     STICK:
       exp: 0.2
-      money: 0.005
+      money: "0.003-0.007"
       chance: 30.0
     STRING:
       exp: 0.3
-      money: 0.01
+      money: "0.008-0.012"
       chance: 35.0
     BOWL:
       exp: 0.3
-      money: 0.01
+      money: "0.008-0.012"
       chance: 35.0
     ROTTEN_FLESH:
       exp: 0.2
-      money: 0.005
+      money: "0.003-0.007"
       chance: 30.0
     TRIPWIRE_HOOK:
       exp: 0.5
-      money: 0.02
+      money: "0.015-0.025"
       chance: 40.0
     POTION:
       exp: 1.0
-      money: 0.1
+      money: "0.08-0.12"
       chance: 60.0
 
 level_rewards:

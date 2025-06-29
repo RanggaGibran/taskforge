@@ -11,93 +11,93 @@ objectives:
     # Hostile mobs
     ZOMBIE:
       exp: 2.0
-      money: 0.2
+      money: "0.15-0.25"
       chance: 85.0
     SKELETON:
       exp: 2.5
-      money: 0.25
+      money: "0.20-0.30"
       chance: 85.0
     CREEPER:
       exp: 3.0
-      money: 0.3
+      money: "0.25-0.35"
       chance: 88.0
     SPIDER:
       exp: 2.2
-      money: 0.22
+      money: "0.18-0.26"
       chance: 82.0
     ENDERMAN:
       exp: 5.0
-      money: 0.8
+      money: "0.60-1.00"
       chance: 90.0
     WITCH:
       exp: 4.0
-      money: 0.5
+      money: "0.40-0.60"
       chance: 88.0
     PILLAGER:
       exp: 3.5
-      money: 0.4
+      money: "0.30-0.50"
       chance: 87.0
     VINDICATOR:
       exp: 4.5
-      money: 0.6
+      money: "0.50-0.70"
       chance: 90.0
     EVOKER:
       exp: 8.0
-      money: 1.5
+      money: "1.20-1.80"
       chance: 95.0
     VEX:
       exp: 3.0
-      money: 0.35
+      money: "0.25-0.45"
       chance: 85.0
     RAVAGER:
       exp: 10.0
-      money: 2.0
+      money: "1.50-2.50"
       chance: 95.0
     
     # Nether mobs
     ZOMBIE_PIGMAN:
       exp: 3.5
-      money: 0.4
+      money: "0.30-0.50"
       chance: 85.0
     BLAZE:
       exp: 4.0
-      money: 0.6
+      money: "0.50-0.70"
       chance: 88.0
     GHAST:
       exp: 6.0
-      money: 1.0
+      money: "0.80-1.20"
       chance: 92.0
     WITHER_SKELETON:
       exp: 5.0
-      money: 0.8
+      money: "0.60-1.00"
       chance: 90.0
     MAGMA_CUBE:
       exp: 2.5
-      money: 0.3
+      money: "0.25-0.35"
       chance: 80.0
     HOGLIN:
       exp: 4.5
-      money: 0.7
+      money: "0.55-0.85"
       chance: 88.0
     
     # End mobs
     ENDERMITE:
       exp: 2.0
-      money: 0.25
+      money: "0.20-0.30"
       chance: 80.0
     SHULKER:
       exp: 6.0
-      money: 1.2
+      money: "1.00-1.40"
       chance: 92.0
     
     # Bosses
     ENDER_DRAGON:
       exp: 100.0
-      money: 50.0
+      money: "40.00-60.00"
       chance: 100.0
     WITHER:
       exp: 75.0
-      money: 35.0
+      money: "30.00-40.00"
       chance: 100.0
     WARDEN:
       exp: 50.0

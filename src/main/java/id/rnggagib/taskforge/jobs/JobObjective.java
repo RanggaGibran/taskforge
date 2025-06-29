@@ -1,17 +1,35 @@
 package id.rnggagib.taskforge.jobs;
 
+import java.util.Random;
+
 /**
  * Represents an objective within a job that can be completed for rewards
  */
 public class JobObjective {
     
     private final double experience;
-    private final double money;
+    private final double moneyMin;
+    private final double moneyMax;
     private final double chance;
+    private static final Random random = new Random();
     
+    /**
+     * Constructor for single money value (backwards compatibility)
+     */
     public JobObjective(double experience, double money, double chance) {
         this.experience = experience;
-        this.money = money;
+        this.moneyMin = money;
+        this.moneyMax = money;
+        this.chance = Math.max(0.0, Math.min(100.0, chance)); // Clamp between 0-100
+    }
+    
+    /**
+     * Constructor for money range
+     */
+    public JobObjective(double experience, double moneyMin, double moneyMax, double chance) {
+        this.experience = experience;
+        this.moneyMin = Math.min(moneyMin, moneyMax);
+        this.moneyMax = Math.max(moneyMin, moneyMax);
         this.chance = Math.max(0.0, Math.min(100.0, chance)); // Clamp between 0-100
     }
     
@@ -23,10 +41,52 @@ public class JobObjective {
     }
     
     /**
-     * Get money reward for this objective
+     * Get money reward for this objective (backwards compatibility - returns random value in range)
      */
     public double getMoney() {
-        return money;
+        return getRandomMoney();
+    }
+    
+    /**
+     * Get minimum money reward
+     */
+    public double getMoneyMin() {
+        return moneyMin;
+    }
+    
+    /**
+     * Get maximum money reward
+     */
+    public double getMoneyMax() {
+        return moneyMax;
+    }
+    
+    /**
+     * Get a random money value within the range
+     */
+    public double getRandomMoney() {
+        if (moneyMin == moneyMax) {
+            return moneyMin;
+        }
+        return moneyMin + (random.nextDouble() * (moneyMax - moneyMin));
+    }
+    
+    /**
+     * Check if this objective uses a money range
+     */
+    public boolean hasMoneyRange() {
+        return moneyMin != moneyMax;
+    }
+    
+    /**
+     * Get formatted money string for display
+     */
+    public String getMoneyDisplay() {
+        if (hasMoneyRange()) {
+            return String.format("$%.2f - $%.2f", moneyMin, moneyMax);
+        } else {
+            return String.format("$%.2f", moneyMin);
+        }
     }
     
     /**
@@ -48,7 +108,12 @@ public class JobObjective {
     
     @Override
     public String toString() {
-        return String.format("JobObjective{exp=%.2f, money=%.2f, chance=%.1f%%}", 
-                           experience, money, chance);
+        if (hasMoneyRange()) {
+            return String.format("JobObjective{exp=%.2f, money=%.2f-%.2f, chance=%.1f%%}", 
+                               experience, moneyMin, moneyMax, chance);
+        } else {
+            return String.format("JobObjective{exp=%.2f, money=%.2f, chance=%.1f%%}", 
+                               experience, moneyMin, chance);
+        }
     }
 }

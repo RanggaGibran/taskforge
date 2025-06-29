@@ -11,91 +11,91 @@ objectives:
     # Crops
     WHEAT:
       exp: 1.0
-      money: 0.05
+      money: "0.04-0.06"
       chance: 80.0
     CARROT:
       exp: 1.0
-      money: 0.05
+      money: "0.04-0.06"
       chance: 80.0
     POTATO:
       exp: 1.0
-      money: 0.05
+      money: "0.04-0.06"
       chance: 80.0
     BEETROOT:
       exp: 1.2
-      money: 0.06
+      money: "0.05-0.07"
       chance: 78.0
     NETHER_WART:
       exp: 2.0
-      money: 0.15
+      money: "0.12-0.18"
       chance: 85.0
     COCOA_BEANS:
       exp: 1.5
-      money: 0.08
+      money: "0.06-0.10"
       chance: 75.0
     MELON:
       exp: 0.8
-      money: 0.04
+      money: "0.03-0.05"
       chance: 70.0
     PUMPKIN:
       exp: 1.2
-      money: 0.07
+      money: "0.05-0.09"
       chance: 75.0
     SUGAR_CANE:
       exp: 0.6
-      money: 0.03
+      money: "0.02-0.04"
       chance: 65.0
     BAMBOO:
       exp: 0.4
-      money: 0.02
+      money: "0.015-0.025"
       chance: 60.0
     SWEET_BERRIES:
       exp: 0.8
-      money: 0.04
+      money: "0.03-0.05"
       chance: 70.0
     
   BREED:
     COW:
       exp: 5.0
-      money: 0.5
+      money: "0.40-0.60"
       chance: 90.0
     PIG:
       exp: 4.0
-      money: 0.4
+      money: "0.30-0.50"
       chance: 90.0
     CHICKEN:
       exp: 3.0
-      money: 0.3
+      money: "0.25-0.35"
       chance: 85.0
     SHEEP:
       exp: 4.5
-      money: 0.45
+      money: "0.35-0.55"
       chance: 88.0
     HORSE:
       exp: 8.0
-      money: 1.0
+      money: "0.80-1.20"
       chance: 95.0
     RABBIT:
       exp: 2.5
-      money: 0.25
+      money: "0.20-0.30"
       chance: 80.0
     
   TAME:
     HORSE:
       exp: 10.0
-      money: 1.5
+      money: "1.20-1.80"
       chance: 95.0
     CAT:
       exp: 6.0
-      money: 0.8
+      money: "0.60-1.00"
       chance: 90.0
     WOLF:
       exp: 7.0
-      money: 1.0
+      money: "0.80-1.20"
       chance: 92.0
     PARROT:
       exp: 8.0
-      money: 1.2
+      money: "1.00-1.40"
       chance: 88.0
 
 level_rewards:
