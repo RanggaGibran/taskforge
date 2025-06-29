@@ -19,6 +19,7 @@ import org.bukkit.plugin.Plugin;
 
 import id.rnggagib.taskforge.TaskForgePlugin;
 import id.rnggagib.taskforge.jobs.Job;
+import id.rnggagib.taskforge.utils.TimeUtils;
 
 /**
  * Professional Job Detail Hub GUI - Modern interface for job management
@@ -239,7 +240,7 @@ public class JobDetailGUI implements Listener {
         boolean hasJob = plugin.getPlayerDataManager().hasJob(player.getUniqueId(), job.getName());
         
         if (hasJob) {
-            // Leave button with HeadDatabase
+            // Leave button with HeadDatabase and cooldown check
             ItemStack leaveButton;
             if (headDatabaseAvailable) {
                 leaveButton = createPlayerHead("hdb:69026"); // Red X or exit icon
@@ -249,14 +250,43 @@ public class JobDetailGUI implements Listener {
             
             ItemMeta meta = leaveButton.getItemMeta();
             if (meta != null) {
-                meta.setDisplayName(plugin.getConfigManager().translateColorCodes("&c&l✕ &cLEAVE JOB"));
-                List<String> lore = new ArrayList<>();
-                lore.add("");
-                lore.add(plugin.getConfigManager().translateColorCodes("&7Click to leave this job"));
-                lore.add(plugin.getConfigManager().translateColorCodes("&c&lWARNING: &7All progress will be lost!"));
-                lore.add("");
-                lore.add(plugin.getConfigManager().translateColorCodes("&e▶ Click to leave"));
-                meta.setLore(lore);
+                // Check cooldown status
+                long joinTimestamp = plugin.getDatabaseManager().getJobJoinTimestamp(player.getUniqueId(), job.getName());
+                boolean canLeave = true;
+                String remainingTimeFormatted = "";
+                
+                if (joinTimestamp > 0) {
+                    String cooldownString = plugin.getConfigManager().getJobLeaveCooldown();
+                    long cooldownDuration = TimeUtils.parseTimeToMillis(cooldownString);
+                    
+                    if (!TimeUtils.isCooldownExpired(joinTimestamp, cooldownDuration)) {
+                        canLeave = false;
+                        long remainingTime = TimeUtils.getRemainingCooldown(joinTimestamp, cooldownDuration);
+                        remainingTimeFormatted = TimeUtils.formatTime(remainingTime);
+                    }
+                }
+                
+                if (canLeave) {
+                    meta.setDisplayName(plugin.getConfigManager().translateColorCodes("&c&l✕ &cLEAVE JOB"));
+                    List<String> lore = new ArrayList<>();
+                    lore.add("");
+                    lore.add(plugin.getConfigManager().translateColorCodes("&7Click to leave this job"));
+                    lore.add(plugin.getConfigManager().translateColorCodes("&c&lWARNING: &7All progress will be lost!"));
+                    lore.add("");
+                    lore.add(plugin.getConfigManager().translateColorCodes("&e▶ Click to leave"));
+                    meta.setLore(lore);
+                } else {
+                    meta.setDisplayName(plugin.getConfigManager().translateColorCodes("&c&l✕ &cLEAVE JOB &7(ON COOLDOWN)"));
+                    List<String> lore = new ArrayList<>();
+                    lore.add("");
+                    lore.add(plugin.getConfigManager().translateColorCodes("&7You must wait before leaving this job"));
+                    lore.add(plugin.getConfigManager().translateColorCodes("&c&lWARNING: &7All progress will be lost!"));
+                    lore.add("");
+                    lore.add(plugin.getConfigManager().translateColorCodes("&c⏰ Cooldown: &e" + remainingTimeFormatted));
+                    lore.add(plugin.getConfigManager().translateColorCodes("&7You can leave after the cooldown expires"));
+                    meta.setLore(lore);
+                }
+                
                 leaveButton.setItemMeta(meta);
             }
             inventory.setItem(10, leaveButton);
@@ -593,6 +623,9 @@ public class JobDetailGUI implements Listener {
         }
         
         if (plugin.getPlayerDataManager().joinJob(player.getUniqueId(), job.getName())) {
+            // Record join timestamp for cooldown
+            plugin.getDatabaseManager().recordJobJoin(player.getUniqueId(), job.getName());
+            
             String message = plugin.getConfigManager().getPrefixedMessage("job_joined", "job", job.getName());
             player.sendMessage(message);
             
@@ -607,6 +640,25 @@ public class JobDetailGUI implements Listener {
      * Handle leaving the job
      */
     private void handleLeaveJob() {
+        // Check join-to-leave cooldown
+        long joinTimestamp = plugin.getDatabaseManager().getJobJoinTimestamp(player.getUniqueId(), job.getName());
+        
+        if (joinTimestamp > 0) {
+            String cooldownString = plugin.getConfigManager().getJobLeaveCooldown();
+            long cooldownDuration = TimeUtils.parseTimeToMillis(cooldownString);
+            
+            if (!TimeUtils.isCooldownExpired(joinTimestamp, cooldownDuration)) {
+                // Cooldown still active
+                long remainingTime = TimeUtils.getRemainingCooldown(joinTimestamp, cooldownDuration);
+                String remainingTimeFormatted = TimeUtils.formatTime(remainingTime);
+                
+                String cooldownMessage = plugin.getConfigManager().getMessage("job_leave_cooldown", "time", remainingTimeFormatted);
+                player.sendMessage(cooldownMessage);
+                return;
+            }
+        }
+        
+        // Proceed with leaving the job
         if (plugin.getPlayerDataManager().leaveJob(player.getUniqueId(), job.getName())) {
             String message = plugin.getConfigManager().getPrefixedMessage("job_left", "job", job.getName());
             player.sendMessage(message);

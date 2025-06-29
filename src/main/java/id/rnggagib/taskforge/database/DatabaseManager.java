@@ -110,7 +110,7 @@ public class DatabaseManager {
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "player_uuid TEXT NOT NULL," +
             "job_name TEXT NOT NULL," +
-            "leave_timestamp INTEGER NOT NULL," +
+            "join_timestamp INTEGER NOT NULL," +
             "UNIQUE(player_uuid, job_name)" +
             ")";
         
@@ -322,10 +322,10 @@ public class DatabaseManager {
     }
     
     /**
-     * Record job leave timestamp for cooldown tracking
+     * Record job join timestamp for cooldown tracking
      */
-    public void recordJobLeave(UUID playerUUID, String jobName) {
-        String sql = "INSERT OR REPLACE INTO job_cooldowns (player_uuid, job_name, leave_timestamp) VALUES (?, ?, ?)";
+    public void recordJobJoin(UUID playerUUID, String jobName) {
+        String sql = "INSERT OR REPLACE INTO job_cooldowns (player_uuid, job_name, join_timestamp) VALUES (?, ?, ?)";
         
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setString(1, playerUUID.toString());
@@ -333,15 +333,15 @@ public class DatabaseManager {
             stmt.setLong(3, System.currentTimeMillis());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            logger.severe("Failed to record job leave for " + playerUUID + ": " + e.getMessage());
+            logger.severe("Failed to record job join for " + playerUUID + ": " + e.getMessage());
         }
     }
     
     /**
-     * Get job leave timestamp for cooldown checking
+     * Get job join timestamp for cooldown checking
      */
-    public long getJobLeaveTimestamp(UUID playerUUID, String jobName) {
-        String sql = "SELECT leave_timestamp FROM job_cooldowns WHERE player_uuid = ? AND job_name = ?";
+    public long getJobJoinTimestamp(UUID playerUUID, String jobName) {
+        String sql = "SELECT join_timestamp FROM job_cooldowns WHERE player_uuid = ? AND job_name = ?";
         
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setString(1, playerUUID.toString());
@@ -349,14 +349,14 @@ public class DatabaseManager {
             
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getLong("leave_timestamp");
+                    return rs.getLong("join_timestamp");
                 }
             }
         } catch (SQLException e) {
-            logger.severe("Failed to get job leave timestamp for " + playerUUID + ": " + e.getMessage());
+            logger.severe("Failed to get job join timestamp for " + playerUUID + ": " + e.getMessage());
         }
         
-        return 0; // No record found
+        return 0; // No timestamp found
     }
     
     /**
@@ -379,7 +379,7 @@ public class DatabaseManager {
      */
     public void cleanupExpiredCooldowns(long cooldownDuration) {
         long expiredBefore = System.currentTimeMillis() - cooldownDuration;
-        String sql = "DELETE FROM job_cooldowns WHERE leave_timestamp < ?";
+        String sql = "DELETE FROM job_cooldowns WHERE join_timestamp < ?";
         
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setLong(1, expiredBefore);

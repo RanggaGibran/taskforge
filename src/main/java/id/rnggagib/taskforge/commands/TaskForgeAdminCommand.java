@@ -339,11 +339,18 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
             return;
         }
         
-        long leaveTimestamp = plugin.getDatabaseManager().getJobLeaveTimestamp(offlinePlayer.getUniqueId(), jobName);
-        
-        if (leaveTimestamp == 0) {
+        // Check if player has the job first
+        if (!plugin.getPlayerDataManager().hasJob(offlinePlayer.getUniqueId(), jobName)) {
             sender.sendMessage(plugin.getConfigManager().getPrefix() + 
-                              "&e" + playerName + "&a has no cooldown for job &e" + jobName + "&a.");
+                              "&e" + playerName + "&a doesn't have the &e" + jobName + "&a job.");
+            return;
+        }
+        
+        long joinTimestamp = plugin.getDatabaseManager().getJobJoinTimestamp(offlinePlayer.getUniqueId(), jobName);
+        
+        if (joinTimestamp == 0) {
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&e" + playerName + "&a has no cooldown record for job &e" + jobName + "&a.");
             return;
         }
         
@@ -351,15 +358,15 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
         String cooldownString = plugin.getConfigManager().getJobLeaveCooldown();
         long cooldownDuration = TimeUtils.parseTimeToMillis(cooldownString);
         
-        if (TimeUtils.isCooldownExpired(leaveTimestamp, cooldownDuration)) {
+        if (TimeUtils.isCooldownExpired(joinTimestamp, cooldownDuration)) {
             sender.sendMessage(plugin.getConfigManager().getPrefix() + 
-                              "&e" + playerName + "&a's cooldown for job &e" + jobName + "&a has expired.");
+                              "&e" + playerName + "&a can leave the &e" + jobName + "&a job (cooldown expired).");
         } else {
-            long remainingTime = TimeUtils.getRemainingCooldown(leaveTimestamp, cooldownDuration);
+            long remainingTime = TimeUtils.getRemainingCooldown(joinTimestamp, cooldownDuration);
             String remainingTimeFormatted = TimeUtils.formatTime(remainingTime);
             
             sender.sendMessage(plugin.getConfigManager().getPrefix() + 
-                              "&e" + playerName + "&a has &c" + remainingTimeFormatted + "&a remaining for job &e" + jobName + "&a.");
+                              "&e" + playerName + "&a must wait &c" + remainingTimeFormatted + "&a before leaving the &e" + jobName + "&a job.");
         }
     }
 

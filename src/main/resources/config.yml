@@ -29,6 +29,7 @@ settings:
     job_reset: "&aReset &e%player%&a's progress in &e%job%&a!"
     job_cooldown_active: "&cYou must wait &e%time%&c before leaving another job!"
     job_cooldown_remaining: "&cCooldown remaining: &e%time%"
+    job_leave_cooldown: "&cYou must wait &e%time%&c before leaving the &e%job%&c job!"
     
   # GUI settings
   gui:
@@ -125,7 +126,8 @@ debug:
 job_cooldown:
   # Enable job leave cooldown
   enabled: true
-  # Cooldown time before a player can leave and join another job
+  # Cooldown time after joining a job before player can leave it
+  # This prevents players from rapidly joining and leaving jobs
   # Format: 1d (days), 1h (hours), 1m (minutes), 1s (seconds)
   # Examples: "30m", "1h", "2h30m", "24h", "1d"
   leave_cooldown: "1h"

@@ -127,6 +127,11 @@ public class JobsCommand implements CommandExecutor, TabCompleter {
         
         // Join the job
         if (plugin.getPlayerDataManager().joinJob(player.getUniqueId(), jobName)) {
+            // Record the join timestamp for cooldown tracking
+            if (plugin.getConfigManager().isJobCooldownEnabled()) {
+                plugin.getDatabaseManager().recordJobJoin(player.getUniqueId(), jobName);
+            }
+            
             String message = plugin.getConfigManager().getPrefixedMessage("job_joined", "job", jobName);
             player.sendMessage(message);
         } else {
@@ -143,7 +148,7 @@ public class JobsCommand implements CommandExecutor, TabCompleter {
             return;
         }
         
-        // Check job cooldown if enabled
+        // Check job cooldown if enabled (check if enough time has passed since joining)
         if (plugin.getConfigManager().isJobCooldownEnabled()) {
             if (isJobOnCooldown(player, jobName)) {
                 return; // Cooldown message already sent in isJobOnCooldown method
@@ -152,9 +157,9 @@ public class JobsCommand implements CommandExecutor, TabCompleter {
         
         // Leave the job
         if (plugin.getPlayerDataManager().leaveJob(player.getUniqueId(), jobName)) {
-            // Record the leave timestamp for cooldown tracking
+            // Remove the join timestamp since the job is left
             if (plugin.getConfigManager().isJobCooldownEnabled()) {
-                plugin.getDatabaseManager().recordJobLeave(player.getUniqueId(), jobName);
+                plugin.getDatabaseManager().removeJobCooldown(player.getUniqueId(), jobName);
             }
             
             String message = plugin.getConfigManager().getPrefixedMessage("job_left", "job", jobName);
@@ -260,10 +265,10 @@ public class JobsCommand implements CommandExecutor, TabCompleter {
      * @return true if on cooldown, false otherwise
      */
     private boolean isJobOnCooldown(Player player, String jobName) {
-        long leaveTimestamp = plugin.getDatabaseManager().getJobLeaveTimestamp(player.getUniqueId(), jobName);
+        long joinTimestamp = plugin.getDatabaseManager().getJobJoinTimestamp(player.getUniqueId(), jobName);
         
-        // No previous leave record
-        if (leaveTimestamp == 0) {
+        // No join record (shouldn't happen if player has the job)
+        if (joinTimestamp == 0) {
             return false;
         }
         
@@ -271,24 +276,19 @@ public class JobsCommand implements CommandExecutor, TabCompleter {
         String cooldownString = plugin.getConfigManager().getJobLeaveCooldown();
         long cooldownDuration = TimeUtils.parseTimeToMillis(cooldownString);
         
-        // Check if cooldown has expired
-        if (TimeUtils.isCooldownExpired(leaveTimestamp, cooldownDuration)) {
-            // Cleanup expired cooldown
-            plugin.getDatabaseManager().removeJobCooldown(player.getUniqueId(), jobName);
-            return false;
+        // Check if cooldown has expired (enough time has passed since joining)
+        if (TimeUtils.isCooldownExpired(joinTimestamp, cooldownDuration)) {
+            return false; // Can leave the job
         }
         
         // Cooldown is still active - send message to player
-        long remainingTime = TimeUtils.getRemainingCooldown(leaveTimestamp, cooldownDuration);
+        long remainingTime = TimeUtils.getRemainingCooldown(joinTimestamp, cooldownDuration);
         String remainingTimeFormatted = TimeUtils.formatTime(remainingTime);
         
-        if (plugin.getConfigManager().shouldShowRemainingTime()) {
-            String message = plugin.getConfigManager().getPrefixedMessage("job_cooldown_active", "time", remainingTimeFormatted);
-            player.sendMessage(message);
-        } else {
-            String message = plugin.getConfigManager().getPrefixedMessage("job_cooldown_remaining", "time", remainingTimeFormatted);
-            player.sendMessage(message);
-        }
+        String message = plugin.getConfigManager().getPrefixedMessage("job_leave_cooldown", 
+                                                                      "time", remainingTimeFormatted,
+                                                                      "job", jobName);
+        player.sendMessage(message);
         
         return true;
     }

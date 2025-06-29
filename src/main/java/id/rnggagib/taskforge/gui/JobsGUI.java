@@ -22,6 +22,7 @@ import org.bukkit.plugin.Plugin;
 
 import id.rnggagib.taskforge.TaskForgePlugin;
 import id.rnggagib.taskforge.jobs.Job;
+import id.rnggagib.taskforge.utils.TimeUtils;
 
 /**
  * Professional Jobs Browser GUI - Main hub for job discovery and management
@@ -305,8 +306,25 @@ public class JobsGUI implements Listener {
                 lore.add(plugin.getConfigManager().translateColorCodes("&a&l⚡ ACTIVE JOB"));
                 lore.add(plugin.getConfigManager().translateColorCodes("&8├ &7Level: &e&l" + level));
                 lore.add(plugin.getConfigManager().translateColorCodes("&8├ &7Experience: &b" + String.format("%.1f", exp)));
-                lore.add(plugin.getConfigManager().translateColorCodes("&8└ &7Progress: &a" + 
+                lore.add(plugin.getConfigManager().translateColorCodes("&8├ &7Progress: &a" + 
                     createProgressBar(progress, 10) + " &a" + String.format("%.1f%%", progress * 100)));
+                
+                // Add cooldown information
+                long joinTimestamp = plugin.getDatabaseManager().getJobJoinTimestamp(player.getUniqueId(), job.getName());
+                if (joinTimestamp > 0) {
+                    String cooldownString = plugin.getConfigManager().getJobLeaveCooldown();
+                    long cooldownDuration = TimeUtils.parseTimeToMillis(cooldownString);
+                    
+                    if (!TimeUtils.isCooldownExpired(joinTimestamp, cooldownDuration)) {
+                        long remainingTime = TimeUtils.getRemainingCooldown(joinTimestamp, cooldownDuration);
+                        String remainingTimeFormatted = TimeUtils.formatTime(remainingTime);
+                        lore.add(plugin.getConfigManager().translateColorCodes("&8└ &7Leave Cooldown: &c" + remainingTimeFormatted));
+                    } else {
+                        lore.add(plugin.getConfigManager().translateColorCodes("&8└ &7Leave Cooldown: &a✓ Ready"));
+                    }
+                } else {
+                    lore.add(plugin.getConfigManager().translateColorCodes("&8└ &7Leave Cooldown: &a✓ Ready"));
+                }
                 lore.add("");
                 
                 // Quick stats preview
