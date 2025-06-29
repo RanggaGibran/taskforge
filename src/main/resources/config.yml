@@ -86,6 +86,25 @@ economy:
   # Currency symbol for display
   currency_symbol: "$"
 
+# Notification settings
+notifications:
+  # Notification type: "bossbar" or "chat"
+  type: "bossbar"
+  # Bossbar settings
+  bossbar:
+    # Time in seconds to show bossbar
+    display_time: 3
+    # Time in seconds to accumulate rewards (anti-spam)
+    accumulation_time: 2
+    # Bossbar color: GREEN, BLUE, RED, PINK, PURPLE, WHITE, YELLOW
+    color: "GREEN"
+  # Chat settings
+  chat:
+    # Enable experience notifications in chat
+    exp_notifications: true
+    # Enable money notifications in chat
+    money_notifications: true
+
 # Anti-Exploit settings
 anti_exploit:
   # Enable anti-exploit protection

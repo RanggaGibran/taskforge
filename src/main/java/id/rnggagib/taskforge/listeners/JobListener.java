@@ -218,6 +218,9 @@ public class JobListener implements Listener {
     
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        // Clean up notifications
+        plugin.getNotificationManager().onPlayerQuit(event.getPlayer());
+        
         // Save and unload player data when they leave
         plugin.getPlayerDataManager().unloadPlayerData(event.getPlayer().getUniqueId());
     }
@@ -370,16 +373,17 @@ public class JobListener implements Listener {
         double experience = objective.getExperience();
         double money = objective.getMoney();
         
+        StringBuilder rewardMessage = new StringBuilder();
+        boolean hasRewards = false;
+        
         // Add experience (always given if > 0)
         if (experience > 0) {
             plugin.getPlayerDataManager().addJobExperience(player.getUniqueId(), jobName, experience);
             
-            // Send experience message if enabled
+            // Build experience part of notification
             if (plugin.getConfigManager().isFeatureEnabled("exp_notifications")) {
-                String message = plugin.getConfigManager().getMessage("job_exp_earned", 
-                                                                    "exp", String.format("%.1f", experience),
-                                                                    "job", jobName);
-                player.sendMessage(message);
+                rewardMessage.append("+").append(String.format("%.1f", experience)).append(" EXP");
+                hasRewards = true;
             }
         }
         
@@ -390,17 +394,23 @@ public class JobListener implements Listener {
             // Update statistics (only count money if it was actually given)
             plugin.getDatabaseManager().updatePlayerStats(player.getUniqueId(), jobName, money, experience);
             
-            // Send money message if enabled
+            // Build money part of notification
             if (plugin.getConfigManager().isFeatureEnabled("money_notifications")) {
                 String currencySymbol = plugin.getConfigManager().getCurrencySymbol();
-                String message = plugin.getConfigManager().getMessage("job_money_earned", 
-                                                                    "amount", currencySymbol + String.format("%.2f", money),
-                                                                    "job", jobName);
-                player.sendMessage(message);
+                if (hasRewards) {
+                    rewardMessage.append(" and ");
+                }
+                rewardMessage.append("+").append(currencySymbol).append(String.format("%.2f", money));
+                hasRewards = true;
             }
         } else {
             // Update statistics with 0 money if chance failed
             plugin.getDatabaseManager().updatePlayerStats(player.getUniqueId(), jobName, 0.0, experience);
+        }
+        
+        // Send combined notification if there are rewards
+        if (hasRewards && rewardMessage.length() > 0) {
+            plugin.getNotificationManager().sendRewardNotification(player, rewardMessage.toString());
         }
     }
 }

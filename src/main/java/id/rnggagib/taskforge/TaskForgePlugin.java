@@ -12,6 +12,7 @@ import id.rnggagib.taskforge.config.ConfigManager;
 import id.rnggagib.taskforge.database.DatabaseManager;
 import id.rnggagib.taskforge.listeners.JobListener;
 import id.rnggagib.taskforge.managers.JobManager;
+import id.rnggagib.taskforge.managers.NotificationManager;
 import id.rnggagib.taskforge.managers.PlayerDataManager;
 import id.rnggagib.taskforge.placeholders.TaskForgePlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
@@ -30,6 +31,7 @@ public class TaskForgePlugin extends JavaPlugin {
     private DatabaseManager databaseManager;
     private JobManager jobManager;
     private PlayerDataManager playerDataManager;
+    private NotificationManager notificationManager;
     
     // Economy integration
     private Economy economy = null;
@@ -71,6 +73,11 @@ public class TaskForgePlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         LOGGER.info("TaskForge is shutting down...");
+        
+        // Clean up notifications
+        if (notificationManager != null) {
+            notificationManager.shutdown();
+        }
         
         // Save all player data
         if (playerDataManager != null) {
@@ -140,6 +147,7 @@ public class TaskForgePlugin extends JavaPlugin {
         try {
             jobManager = new JobManager(this);
             playerDataManager = new PlayerDataManager(this);
+            notificationManager = new NotificationManager(this);
             
             // Load jobs from configuration
             jobManager.loadJobsFromConfig();
@@ -221,6 +229,10 @@ public class TaskForgePlugin extends JavaPlugin {
     
     public PlayerDataManager getPlayerDataManager() {
         return playerDataManager;
+    }
+    
+    public NotificationManager getNotificationManager() {
+        return notificationManager;
     }
     
     public Economy getEconomy() {
