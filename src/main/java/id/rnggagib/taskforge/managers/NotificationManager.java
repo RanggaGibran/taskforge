@@ -268,4 +268,11 @@ public class NotificationManager {
         
         bossBarTasks.put(playerUUID, removeTask);
     }
+    
+    /**
+     * Send bossbar notification directly (for salary system and other special notifications)
+     */
+    public void sendBossbarNotification(Player player, String message) {
+        sendSimpleBossBarNotification(player, message);
+    }
 }

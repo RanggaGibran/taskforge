@@ -387,24 +387,48 @@ public class JobListener implements Listener {
             }
         }
         
-        // Give money only if chance succeeds AND money > 0
-        if (money > 0 && plugin.isEconomyEnabled()) {
-            plugin.getEconomy().depositPlayer(player, money);
-            
-            // Update statistics (only count money if it was actually given)
-            plugin.getDatabaseManager().updatePlayerStats(player.getUniqueId(), jobName, money, experience);
-            
-            // Build money part of notification
-            if (plugin.getConfigManager().isFeatureEnabled("money_notifications")) {
-                String currencySymbol = plugin.getConfigManager().getCurrencySymbol();
-                if (hasRewards) {
-                    rewardMessage.append(" and ");
+        // Handle money through salary system or direct payment
+        if (money > 0) {
+            if (plugin.getSalaryManager().isSalarySystemEnabled()) {
+                // Accumulate money in salary system
+                plugin.getSalaryManager().addPendingSalary(player.getUniqueId(), money);
+                
+                // Build money part of notification
+                if (plugin.getConfigManager().isFeatureEnabled("money_notifications")) {
+                    String currencySymbol = plugin.getConfigManager().getCurrencySymbol();
+                    if (hasRewards) {
+                        rewardMessage.append(" and ");
+                    }
+                    rewardMessage.append("+").append(currencySymbol).append(String.format("%.2f", money)).append(" (pending)");
+                    hasRewards = true;
                 }
-                rewardMessage.append("+").append(currencySymbol).append(String.format("%.2f", money));
-                hasRewards = true;
+                
+                // Update statistics with money added to salary
+                plugin.getDatabaseManager().updatePlayerStats(player.getUniqueId(), jobName, money, experience);
+            } else {
+                // Direct payment (salary system disabled)
+                if (plugin.isEconomyEnabled()) {
+                    plugin.getEconomy().depositPlayer(player, money);
+                    
+                    // Build money part of notification
+                    if (plugin.getConfigManager().isFeatureEnabled("money_notifications")) {
+                        String currencySymbol = plugin.getConfigManager().getCurrencySymbol();
+                        if (hasRewards) {
+                            rewardMessage.append(" and ");
+                        }
+                        rewardMessage.append("+").append(currencySymbol).append(String.format("%.2f", money));
+                        hasRewards = true;
+                    }
+                    
+                    // Update statistics with money given
+                    plugin.getDatabaseManager().updatePlayerStats(player.getUniqueId(), jobName, money, experience);
+                } else {
+                    // Economy disabled, only update stats with 0 money
+                    plugin.getDatabaseManager().updatePlayerStats(player.getUniqueId(), jobName, 0.0, experience);
+                }
             }
         } else {
-            // Update statistics with 0 money if chance failed
+            // No money reward, update statistics with 0 money
             plugin.getDatabaseManager().updatePlayerStats(player.getUniqueId(), jobName, 0.0, experience);
         }
         

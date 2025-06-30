@@ -114,11 +114,20 @@ public class DatabaseManager {
             "UNIQUE(player_uuid, job_name)" +
             ")";
         
+        // Pending salaries table
+        String createPendingSalariesTable = 
+            "CREATE TABLE IF NOT EXISTS pending_salaries (" +
+            "player_uuid TEXT PRIMARY KEY," +
+            "amount REAL NOT NULL DEFAULT 0.0," +
+            "last_updated INTEGER DEFAULT (strftime('%s', 'now'))" +
+            ")";
+        
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createPlayerJobsTable);
             stmt.execute(createPlayerStatsTable);
             stmt.execute(createPlayerSettingsTable);
             stmt.execute(createJobCooldownsTable);
+            stmt.execute(createPendingSalariesTable);
             logger.info("Database tables created successfully.");
         }
     }
@@ -375,7 +384,7 @@ public class DatabaseManager {
     }
     
     /**
-     * Clean up expired job cooldowns (for maintenance)
+     * Clean up expired job cooldowns
      */
     public void cleanupExpiredCooldowns(long cooldownDuration) {
         long expiredBefore = System.currentTimeMillis() - cooldownDuration;
@@ -389,6 +398,80 @@ public class DatabaseManager {
             }
         } catch (SQLException e) {
             logger.severe("Failed to cleanup expired cooldowns: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Save pending salary for a player
+     */
+    public void savePendingSalary(UUID playerUUID, double amount) {
+        String sql = "INSERT OR REPLACE INTO pending_salaries (player_uuid, amount, last_updated) VALUES (?, ?, ?)";
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setString(1, playerUUID.toString());
+            stmt.setDouble(2, amount);
+            stmt.setLong(3, System.currentTimeMillis() / 1000); // Unix timestamp
+            
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            logger.severe("Failed to save pending salary for " + playerUUID + ": " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Load pending salary for a player
+     */
+    public double loadPendingSalary(UUID playerUUID) {
+        String sql = "SELECT amount FROM pending_salaries WHERE player_uuid = ?";
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setString(1, playerUUID.toString());
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("amount");
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Failed to load pending salary for " + playerUUID + ": " + e.getMessage());
+        }
+        
+        return 0.0;
+    }
+    
+    /**
+     * Load all pending salaries
+     */
+    public Map<UUID, Double> loadAllPendingSalaries() {
+        Map<UUID, Double> pendingSalaries = new HashMap<>();
+        String sql = "SELECT player_uuid, amount FROM pending_salaries WHERE amount > 0";
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                UUID playerUUID = UUID.fromString(rs.getString("player_uuid"));
+                double amount = rs.getDouble("amount");
+                pendingSalaries.put(playerUUID, amount);
+            }
+        } catch (SQLException e) {
+            logger.severe("Failed to load all pending salaries: " + e.getMessage());
+        }
+        
+        return pendingSalaries;
+    }
+    
+    /**
+     * Delete pending salary for a player (after payout)
+     */
+    public void deletePendingSalary(UUID playerUUID) {
+        String sql = "DELETE FROM pending_salaries WHERE player_uuid = ?";
+        
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setString(1, playerUUID.toString());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            logger.severe("Failed to delete pending salary for " + playerUUID + ": " + e.getMessage());
         }
     }
 

@@ -358,14 +358,22 @@ public class ObjectivesGUI implements Listener {
         }
         inventory.setItem(49, statsItem);
         
-        // Level rewards button
-        ItemStack rewardsItem = new ItemStack(Material.CHEST);
+        // Level rewards button with HeadDatabase
+        ItemStack rewardsItem;
+        if (headDatabaseAvailable) {
+            rewardsItem = createPlayerHead("hdb:66374"); // Level rewards icon
+        } else {
+            rewardsItem = new ItemStack(Material.CHEST);
+        }
+        
         ItemMeta rewardsMeta = rewardsItem.getItemMeta();
         if (rewardsMeta != null) {
             rewardsMeta.setDisplayName(plugin.getConfigManager().translateColorCodes("&6&l🏆 Level Rewards"));
             List<String> lore = new ArrayList<>();
             lore.add(plugin.getConfigManager().translateColorCodes("&7Click to view all level rewards"));
             lore.add(plugin.getConfigManager().translateColorCodes("&7See what you get for leveling up!"));
+            lore.add("");
+            lore.add(plugin.getConfigManager().translateColorCodes("&e▶ Click to view rewards"));
             rewardsMeta.setLore(lore);
             rewardsItem.setItemMeta(rewardsMeta);
         }
@@ -403,6 +411,10 @@ public class ObjectivesGUI implements Listener {
                 break;
             case 42: // Close button
                 player.closeInventory();
+                break;
+            case 53: // Level rewards button
+                player.closeInventory();
+                new LevelRewardsGUI(plugin, player, job, parentGUI).open();
                 break;
         }
     }

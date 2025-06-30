@@ -14,6 +14,7 @@ import id.rnggagib.taskforge.listeners.JobListener;
 import id.rnggagib.taskforge.managers.JobManager;
 import id.rnggagib.taskforge.managers.NotificationManager;
 import id.rnggagib.taskforge.managers.PlayerDataManager;
+import id.rnggagib.taskforge.managers.SalaryManager;
 import id.rnggagib.taskforge.placeholders.TaskForgePlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
 
@@ -32,6 +33,7 @@ public class TaskForgePlugin extends JavaPlugin {
     private JobManager jobManager;
     private PlayerDataManager playerDataManager;
     private NotificationManager notificationManager;
+    private SalaryManager salaryManager;
     
     // Economy integration
     private Economy economy = null;
@@ -73,6 +75,11 @@ public class TaskForgePlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         LOGGER.info("TaskForge is shutting down...");
+        
+        // Shutdown salary manager
+        if (salaryManager != null) {
+            salaryManager.shutdown();
+        }
         
         // Clean up notifications
         if (notificationManager != null) {
@@ -148,9 +155,13 @@ public class TaskForgePlugin extends JavaPlugin {
             jobManager = new JobManager(this);
             playerDataManager = new PlayerDataManager(this);
             notificationManager = new NotificationManager(this);
+            salaryManager = new SalaryManager(this);
             
             // Load jobs from configuration
             jobManager.loadJobsFromConfig();
+            
+            // Initialize salary manager
+            salaryManager.initialize();
             
             LOGGER.info("Managers initialized successfully.");
         } catch (Exception e) {
@@ -233,6 +244,10 @@ public class TaskForgePlugin extends JavaPlugin {
     
     public NotificationManager getNotificationManager() {
         return notificationManager;
+    }
+    
+    public SalaryManager getSalaryManager() {
+        return salaryManager;
     }
     
     public Economy getEconomy() {

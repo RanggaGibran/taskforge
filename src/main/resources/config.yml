@@ -30,6 +30,8 @@ settings:
     job_cooldown_active: "&cYou must wait &e%time%&c before leaving another job!"
     job_cooldown_remaining: "&cCooldown remaining: &e%time%"
     job_leave_cooldown: "&cYou must wait &e%time%&c before leaving the &e%job%&c job!"
+    salary_payout: "&a💰 Salary received: &e%amount%"
+    salary_pending: "&7(pending salary: &e%amount%&7)"
     
   # GUI settings
   gui:
@@ -105,6 +107,19 @@ notifications:
     exp_notifications: true
     # Enable money notifications in chat
     money_notifications: true
+
+# Salary System Configuration
+salary_system:
+  # Enable salary system (accumulate and pay job earnings at intervals)
+  enabled: true
+  # Payout interval in minutes (how often to pay accumulated earnings)
+  payout_interval_minutes: 5
+  # Enable salary payout notifications
+  notifications: true
+  # Notification type for salary payouts: "bossbar" or "chat"
+  notification_type: "bossbar"
+  # Message shown when salary is paid out (%amount% will be replaced with actual amount)
+  payout_message: "&a💰 Salary Payout: &e%amount%"
 
 # Anti-Exploit settings
 anti_exploit:

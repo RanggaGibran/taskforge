@@ -98,6 +98,14 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
                 checkJobCooldown(sender, args[1], args[2]);
                 break;
                 
+            case "salary":
+                if (args.length < 2) {
+                    showSalaryHelp(sender);
+                    return true;
+                }
+                handleSalaryCommand(sender, args);
+                break;
+                
             default:
                 showHelp(sender);
                 break;
@@ -296,6 +304,9 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin addexp <player> <job> <amount> &8- &7Add experience to player"));
         sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin resetjob <player> <job> &8- &7Reset player's job progress"));
         sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin info <player> &8- &7Show player's job information"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin salary &8- &7Salary system commands"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin clearcooldown <player> <job> &8- &7Clear job cooldown"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin checkcooldown <player> <job> &8- &7Check job cooldown"));
     }
     
     /**
@@ -380,7 +391,7 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
         
         if (args.length == 1) {
             // First argument - subcommands
-            String[] subCommands = {"reload", "setlevel", "addexp", "resetjob", "info", "clearcooldown", "checkcooldown"};
+            String[] subCommands = {"reload", "setlevel", "addexp", "resetjob", "info", "clearcooldown", "checkcooldown", "salary"};
             for (String subCommand : subCommands) {
                 if (subCommand.toLowerCase().startsWith(args[0].toLowerCase())) {
                     completions.add(subCommand);
@@ -399,6 +410,14 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
                         completions.add(playerName);
                     }
                 }
+            } else if ("salary".equals(subCommand)) {
+                // Salary subcommands
+                String[] salarySubCommands = {"info", "payout", "check"};
+                for (String salarySubCommand : salarySubCommands) {
+                    if (salarySubCommand.toLowerCase().startsWith(args[1].toLowerCase())) {
+                        completions.add(salarySubCommand);
+                    }
+                }
             }
         } else if (args.length == 3) {
             String subCommand = args[0].toLowerCase();
@@ -411,9 +430,142 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
                         completions.add(jobName);
                     }
                 }
+            } else if ("salary".equals(subCommand)) {
+                String salarySubCommand = args[1].toLowerCase();
+                if ("payout".equals(salarySubCommand) || "check".equals(salarySubCommand)) {
+                    // Player names for salary payout/check
+                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                        String playerName = player.getName();
+                        if (playerName != null && playerName.toLowerCase().startsWith(args[2].toLowerCase())) {
+                            completions.add(playerName);
+                        }
+                    }
+                }
             }
         }
         
         return completions;
+    }
+    
+    /**
+     * Handle salary-related commands
+     */
+    private void handleSalaryCommand(CommandSender sender, String[] args) {
+        String salarySubCommand = args[1].toLowerCase();
+        
+        switch (salarySubCommand) {
+            case "info":
+                showSalaryInfo(sender);
+                break;
+                
+            case "payout":
+                if (args.length < 3) {
+                    sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_usage") + 
+                                     " /taskforgeadmin salary payout <player>");
+                    return;
+                }
+                forcePlayerPayout(sender, args[2]);
+                break;
+                
+            case "check":
+                if (args.length < 3) {
+                    sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_usage") + 
+                                     " /taskforgeadmin salary check <player>");
+                    return;
+                }
+                checkPlayerSalary(sender, args[2]);
+                break;
+                
+            default:
+                showSalaryHelp(sender);
+                break;
+        }
+    }
+    
+    /**
+     * Show salary command help
+     */
+    private void showSalaryHelp(CommandSender sender) {
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&6&l=== TaskForge Salary Commands ==="));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin salary info &7- Show salary system info"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin salary payout <player> &7- Force payout for player"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin salary check <player> &7- Check player's pending salary"));
+    }
+    
+    /**
+     * Show salary system information
+     */
+    private void showSalaryInfo(CommandSender sender) {
+        boolean enabled = plugin.getSalaryManager().isSalarySystemEnabled();
+        int intervalMinutes = plugin.getConfigManager().getConfig().getInt("salary_system.payout_interval_minutes", 5);
+        double totalPending = plugin.getSalaryManager().getTotalPendingSalaries();
+        int pendingPlayers = plugin.getSalaryManager().getPendingPlayersCount();
+        
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&6&l=== Salary System Information ==="));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&eStatus: " + (enabled ? "&aEnabled" : "&cDisabled")));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&ePayout Interval: &a" + intervalMinutes + " minutes"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&eTotal Pending: &a$" + String.format("%.2f", totalPending)));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&ePlayers with Pending Salary: &a" + pendingPlayers));
+    }
+    
+    /**
+     * Force payout for a specific player
+     */
+    private void forcePlayerPayout(CommandSender sender, String playerName) {
+        // Find player
+        @SuppressWarnings("deprecation")
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("player_not_found"));
+            return;
+        }
+        
+        UUID playerUUID = offlinePlayer.getUniqueId();
+        double pendingAmount = plugin.getSalaryManager().getPendingSalary(playerUUID);
+        
+        if (pendingAmount <= 0) {
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&e" + playerName + "&a has no pending salary.");
+            return;
+        }
+        
+        if (offlinePlayer.getPlayer() == null || !offlinePlayer.isOnline()) {
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&e" + playerName + "&c is not online. Cannot force payout.");
+            return;
+        }
+        
+        boolean success = plugin.getSalaryManager().forcePayoutPlayer(playerUUID);
+        if (success) {
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&aSuccessfully paid out &e$" + String.format("%.2f", pendingAmount) + "&a to &e" + playerName + "&a.");
+        } else {
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&cFailed to payout salary to &e" + playerName + "&c. Check console for errors.");
+        }
+    }
+    
+    /**
+     * Check a player's pending salary
+     */
+    private void checkPlayerSalary(CommandSender sender, String playerName) {
+        // Find player
+        @SuppressWarnings("deprecation")
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("player_not_found"));
+            return;
+        }
+        
+        UUID playerUUID = offlinePlayer.getUniqueId();
+        double pendingAmount = plugin.getSalaryManager().getPendingSalary(playerUUID);
+        
+        if (pendingAmount <= 0) {
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&e" + playerName + "&a has no pending salary.");
+        } else {
+            sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                              "&e" + playerName + "&a has &e$" + String.format("%.2f", pendingAmount) + "&a pending.");
+        }
     }
 }
