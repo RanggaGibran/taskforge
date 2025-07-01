@@ -17,99 +17,117 @@ objectives:
       exp: 0.3
       money: "0.005-0.015"
       chance: 8.0
+    MOSSY_COBBLESTONE:
+      exp: 0.4
+      money: "0.008-0.018"
+      chance: 15.0
     DEEPSLATE:
       exp: 0.8
       money: "0.02-0.04"
       chance: 12.0
+    COBBLED_DEEPSLATE:
+      exp: 0.6
+      money: "0.015-0.025"
+      chance: 10.0
+    TUFF:
+      exp: 0.7
+      money: "0.018-0.028"
+      chance: 15.0
     
     # Ores - Coal - More reasonable chances
     COAL_ORE:
-      exp: 1.2
-      money: "0.08-0.12"
+      exp: 0.6
+      money: "0.04-0.06"
       chance: 25.0
     DEEPSLATE_COAL_ORE:
-      exp: 1.5
-      money: "0.10-0.15"
+      exp: 0.7
+      money: "0.05-0.08"
       chance: 30.0
       
     # Ores - Iron - Moderate chances
     IRON_ORE:
-      exp: 2.0
-      money: "0.20-0.30"
+      exp: 0.8
+      money: "0.10-0.15"
       chance: 35.0
     DEEPSLATE_IRON_ORE:
-      exp: 2.5
-      money: "0.25-0.35"
+      exp: 0.9
+      money: "0.13-0.18"
       chance: 40.0
       
     # Ores - Gold
     GOLD_ORE:
-      exp: 3.0
-      money: "0.40-0.60"
+      exp: 0.9
+      money: "0.20-0.30"
       chance: 45.0
     DEEPSLATE_GOLD_ORE:
-      exp: 3.5
-      money: "0.50-0.70"
+      exp: 0.9
+      money: "0.25-0.35"
       chance: 50.0
     NETHER_GOLD_ORE:
-      exp: 2.8
-      money: "0.35-0.55"
+      exp: 0.8
+      money: "0.18-0.28"
       chance: 47.0
       
     # Ores - Diamond
     DIAMOND_ORE:
-      exp: 8.0
-      money: "1.50-2.50"
+      exp: 0.9
+      money: "0.75-0.95"
       chance: 60.0
     DEEPSLATE_DIAMOND_ORE:
-      exp: 10.0
-      money: "2.00-3.00"
+      exp: 0.95
+      money: "0.80-0.99"
       chance: 65.0
       
     # Ores - Emerald
     EMERALD_ORE:
-      exp: 12.0
-      money: "4.00-6.00"
+      exp: 0.98
+      money: "0.85-0.99"
       chance: 70.0
     DEEPSLATE_EMERALD_ORE:
-      exp: 15.0
-      money: "5.00-7.00"
+      exp: 0.99
+      money: "0.90-0.99"
       chance: 90.0
       
     # Ores - Redstone
     REDSTONE_ORE:
-      exp: 1.8
-      money: "0.25-0.35"
+      exp: 0.7
+      money: "0.13-0.18"
       chance: 55.0
     DEEPSLATE_REDSTONE_ORE:
-      exp: 2.2
-      money: "0.30-0.40"
+      exp: 0.8
+      money: "0.15-0.20"
       chance: 60.0
       
     # Ores - Lapis
     LAPIS_ORE:
-      exp: 2.5
-      money: "0.30-0.50"
+      exp: 0.8
+      money: "0.15-0.25"
       chance: 50.0
     DEEPSLATE_LAPIS_ORE:
-      exp: 3.0
-      money: "0.40-0.60"
+      exp: 0.9
+      money: "0.20-0.30"
       chance: 55.0
       
     # Ores - Copper
     COPPER_ORE:
-      exp: 1.0
-      money: "0.10-0.20"
+      exp: 0.5
+      money: "0.05-0.10"
       chance: 70.0
     DEEPSLATE_COPPER_ORE:
-      exp: 1.3
-      money: "0.13-0.23"
+      exp: 0.6
+      money: "0.07-0.12"
       chance: 70.0
+      
+    # Ores - Nether Quartz
+    NETHER_QUARTZ_ORE:
+      exp: 0.7
+      money: "0.13-0.20"
+      chance: 50.0
       
     # Ancient Debris
     ANCIENT_DEBRIS:
-      exp: 25.0
-      money: "8.00-12.00"
+      exp: 0.99
+      money: "0.80-0.99"
       chance: 95.0
       
     # Other blocks
@@ -137,28 +155,161 @@ objectives:
       exp: 0.4
       money: "0.012-0.018"
       chance: 45.0
+    AMETHYST_BLOCK:
+      exp: 0.6
+      money: "0.10-0.15"
+      chance: 60.0
+    CALCITE:
+      exp: 0.6
+      money: "0.015-0.025"
+      chance: 40.0
+    BASALT:
+      exp: 0.5
+      money: "0.012-0.020"
+      chance: 35.0
     NETHERRACK:
       exp: 0.3
       money: "0.008-0.012"
       chance: 40.0
+    CRIMSON_NYLIUM:
+      exp: 0.8
+      money: "0.025-0.035"
+      chance: 45.0
+    WARPED_NYLIUM:
+      exp: 0.8
+      money: "0.025-0.035"
+      chance: 45.0
     END_STONE:
       exp: 0.8
       money: "0.04-0.06"
       chance: 55.0
+    OBSIDIAN:
+      exp: 2.5
+      money: "0.50-0.80"
+      chance: 70.0
+    TERRACOTTA:
+      exp: 0.6
+      money: "0.015-0.025"
+      chance: 30.0
 
 level_rewards:
+  # Dynamic level rewards - Crate keys for most levels
+  '2':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 2!"
+  '3':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 3!"
+  '4':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 4!"
   '5':
     type: "MONEY"
     value: 100.0
     message: "&aCongratulations! You earned &e$100&a for reaching Miner Level 5!"
+  '6':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 6!"
+  '7':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 7!"
+  '8':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 8!"
+  '9':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 9!"
   '10':
     type: "MONEY"
     value: 250.0
     message: "&aCongratulations! You earned &e$250&a for reaching Miner Level 10!"
+  '11':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 11!"
+  '12':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 12!"
+  '13':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 13!"
+  '14':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 14!"
+  '15':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Miner Level 15!"
+  '16':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 16!"
+  '17':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 17!"
+  '18':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 18!"
+  '19':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 19!"
+  '20':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Miner Level 20!"
+  '21':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 21!"
+  '22':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 22!"
+  '23':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 23!"
+  '24':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 24!"
   '25':
     type: "MONEY"
     value: 1000.0
     message: "&aCongratulations! You earned &e$1000&a for reaching Miner Level 25!"
+  '26':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 26!"
+  '27':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 27!"
+  '28':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 28!"
+  '29':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Miner Level 29!"
+  '30':
+    type: "COMMAND"
+    value: "crate key give %player% wish 3"
+    message: "&aCongratulations! You earned &e3 Wish Crate Keys&a for reaching Miner Level 30!"
   '50':
     type: "EFFECT"
     value: "PARTICLE:FIREWORKS_SPARK"

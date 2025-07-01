@@ -35,6 +35,11 @@ public class ObjectivesGUI implements Listener {
     private final Inventory inventory;
     private boolean headDatabaseAvailable = false;
     
+    // Pagination support
+    private List<ObjectiveEntry> allObjectives;
+    private int currentPage = 0;
+    private final int OBJECTIVES_PER_PAGE = 28; // 4 rows * 7 slots = 28 objectives
+    
     public ObjectivesGUI(TaskForgePlugin plugin, Player player, Job job, JobDetailGUI parentGUI) {
         this.plugin = plugin;
         this.player = player;
@@ -45,8 +50,11 @@ public class ObjectivesGUI implements Listener {
         Plugin headDbPlugin = Bukkit.getPluginManager().getPlugin("HeadDatabase");
         this.headDatabaseAvailable = headDbPlugin != null && headDbPlugin.isEnabled();
         
+        // Prepare all objectives for pagination
+        prepareObjectives();
+        
         String title = plugin.getConfigManager().translateColorCodes(
-            "&6" + job.getDisplayName() + " &8- &eObjectives");
+            "&6" + job.getDisplayName() + " &8- &eObjectives &7(" + (currentPage + 1) + "/" + getTotalPages() + ")");
         
         this.inventory = Bukkit.createInventory(null, 54, title);
         
@@ -54,6 +62,45 @@ public class ObjectivesGUI implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
         
         setupGUI();
+    }
+    
+    /**
+     * Inner class to hold objective data for pagination
+     */
+    private static class ObjectiveEntry {
+        final ActionType actionType;
+        final Object target;
+        final JobObjective objective;
+        
+        ObjectiveEntry(ActionType actionType, Object target, JobObjective objective) {
+            this.actionType = actionType;
+            this.target = target;
+            this.objective = objective;
+        }
+    }
+    
+    /**
+     * Prepare all objectives for pagination
+     */
+    private void prepareObjectives() {
+        allObjectives = new ArrayList<>();
+        Map<ActionType, Map<Object, JobObjective>> objectives = job.getObjectives();
+        
+        for (ActionType actionType : ActionType.values()) {
+            Map<Object, JobObjective> actionObjectives = objectives.get(actionType);
+            if (actionObjectives == null || actionObjectives.isEmpty()) continue;
+            
+            for (Map.Entry<Object, JobObjective> entry : actionObjectives.entrySet()) {
+                allObjectives.add(new ObjectiveEntry(actionType, entry.getKey(), entry.getValue()));
+            }
+        }
+    }
+    
+    /**
+     * Get total number of pages
+     */
+    private int getTotalPages() {
+        return Math.max(1, (int) Math.ceil((double) allObjectives.size() / OBJECTIVES_PER_PAGE));
     }
     
     /**
@@ -66,13 +113,13 @@ public class ObjectivesGUI implements Listener {
         // Fill background
         fillBackground();
         
-        // Title item
+        // Title item (with page info)
         setupTitle();
         
-        // Display objectives by action type
+        // Display objectives for current page
         setupObjectives();
         
-        // Navigation
+        // Navigation (with pagination)
         setupNavigation();
     }
     
@@ -106,6 +153,9 @@ public class ObjectivesGUI implements Listener {
             lore.add(plugin.getConfigManager().translateColorCodes("&7Complete these actions to earn experience and money"));
             lore.add(plugin.getConfigManager().translateColorCodes("&7Rewards are chance-based - not guaranteed every time"));
             lore.add("");
+            lore.add(plugin.getConfigManager().translateColorCodes("&e&lPage: &f" + (currentPage + 1) + " / " + getTotalPages()));
+            lore.add(plugin.getConfigManager().translateColorCodes("&e&lTotal Objectives: &f" + allObjectives.size()));
+            lore.add("");
             lore.add(plugin.getConfigManager().translateColorCodes("&e&lLegend:"));
             lore.add(plugin.getConfigManager().translateColorCodes("&b⭐ Experience &8- Always given when successful"));
             lore.add(plugin.getConfigManager().translateColorCodes("&a💰 Money &8- Given based on chance"));
@@ -118,101 +168,30 @@ public class ObjectivesGUI implements Listener {
     }
     
     /**
-     * Setup objectives display
+     * Setup objectives display with pagination
      */
     private void setupObjectives() {
-        Map<ActionType, Map<Object, JobObjective>> objectives = job.getObjectives();
+        int startIndex = currentPage * OBJECTIVES_PER_PAGE;
+        int endIndex = Math.min(startIndex + OBJECTIVES_PER_PAGE, allObjectives.size());
         
-        int startSlot = 10;
-        int currentSlot = startSlot;
+        // Display area: slots 10-16, 19-25, 28-34, 37-43 (4 rows, 7 columns each)
+        int[] displaySlots = {
+            10, 11, 12, 13, 14, 15, 16,  // Row 1
+            19, 20, 21, 22, 23, 24, 25,  // Row 2
+            28, 29, 30, 31, 32, 33, 34,  // Row 3
+            37, 38, 39, 40, 41, 42, 43   // Row 4
+        };
         
-        for (ActionType actionType : ActionType.values()) {
-            Map<Object, JobObjective> actionObjectives = objectives.get(actionType);
-            if (actionObjectives == null || actionObjectives.isEmpty()) continue;
-            
-            // Action type header
-            ItemStack header = createActionTypeHeader(actionType, actionObjectives.size());
-            inventory.setItem(currentSlot, header);
-            currentSlot++;
-            
-            // Show objectives for this action type (limit to show nicely)
-            int objectiveCount = 0;
-            for (Map.Entry<Object, JobObjective> entry : actionObjectives.entrySet()) {
-                if (objectiveCount >= 7) break; // Limit per row
-                if (currentSlot >= 44) break; // Don't go beyond visible area
-                
-                Object target = entry.getKey();
-                JobObjective objective = entry.getValue();
-                
-                ItemStack objectiveItem = createObjectiveItem(actionType, target, objective);
-                inventory.setItem(currentSlot, objectiveItem);
-                currentSlot++;
-                objectiveCount++;
-            }
-            
-            // Move to next row if we have more action types
-            if (currentSlot % 9 != 1) {
-                currentSlot = ((currentSlot / 9) + 1) * 9 + 1; // Next row, slot 1
-            }
-            
-            if (currentSlot >= 45) break; // Stop if we're running out of space
+        int slotIndex = 0;
+        for (int i = startIndex; i < endIndex && slotIndex < displaySlots.length; i++, slotIndex++) {
+            ObjectiveEntry entry = allObjectives.get(i);
+            ItemStack objectiveItem = createObjectiveItem(entry.actionType, entry.target, entry.objective);
+            inventory.setItem(displaySlots[slotIndex], objectiveItem);
         }
     }
     
     /**
-     * Create action type header item
-     */
-    private ItemStack createActionTypeHeader(ActionType actionType, int objectiveCount) {
-        Material material;
-        switch (actionType) {
-            case BREAK: material = Material.DIAMOND_PICKAXE; break;
-            case PLACE: material = Material.STONE_BRICKS; break;
-            case KILL: material = Material.DIAMOND_SWORD; break;
-            case BREED: material = Material.WHEAT; break;
-            case TAME: material = Material.BONE; break;
-            case FISH: material = Material.FISHING_ROD; break;
-            case CRAFT: material = Material.CRAFTING_TABLE; break;
-            case SMELT: material = Material.FURNACE; break;
-            default: material = Material.EMERALD;
-        }
-        
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(plugin.getConfigManager().translateColorCodes("&6&l" + actionType.name() + " ACTIONS"));
-            
-            List<String> lore = new ArrayList<>();
-            lore.add(plugin.getConfigManager().translateColorCodes("&7" + objectiveCount + " objectives available"));
-            lore.add("");
-            
-            String description = getActionTypeDescription(actionType);
-            lore.add(plugin.getConfigManager().translateColorCodes("&e" + description));
-            
-            meta.setLore(lore);
-            item.setItemMeta(meta);
-        }
-        return item;
-    }
-    
-    /**
-     * Get description for action type
-     */
-    private String getActionTypeDescription(ActionType actionType) {
-        switch (actionType) {
-            case BREAK: return "Break blocks to earn rewards";
-            case PLACE: return "Place blocks to earn rewards";
-            case KILL: return "Kill entities to earn rewards";
-            case BREED: return "Breed animals to earn rewards";
-            case TAME: return "Tame animals to earn rewards";
-            case FISH: return "Catch fish to earn rewards";
-            case CRAFT: return "Craft items to earn rewards";
-            case SMELT: return "Smelt items to earn rewards";
-            default: return "Perform actions to earn rewards";
-        }
-    }
-    
-    /**
-     * Create objective item
+     * Create objective item with action type display
      */
     private ItemStack createObjectiveItem(ActionType actionType, Object target, JobObjective objective) {
         // Determine material based on target
@@ -222,7 +201,8 @@ public class ObjectivesGUI implements Listener {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             String targetName = getTargetDisplayName(target);
-            meta.setDisplayName(plugin.getConfigManager().translateColorCodes("&e" + targetName));
+            String actionIcon = getActionTypeIcon(actionType);
+            meta.setDisplayName(plugin.getConfigManager().translateColorCodes("&e" + targetName + " " + actionIcon));
             
             List<String> lore = new ArrayList<>();
             lore.add(plugin.getConfigManager().translateColorCodes("&7Action: &6" + actionType.name()));
@@ -247,6 +227,23 @@ public class ObjectivesGUI implements Listener {
             item.setItemMeta(meta);
         }
         return item;
+    }
+    
+    /**
+     * Get action type icon
+     */
+    private String getActionTypeIcon(ActionType actionType) {
+        switch (actionType) {
+            case BREAK: return "&c⛏";
+            case PLACE: return "&e🏗";
+            case KILL: return "&c⚔";
+            case BREED: return "&a🐾";
+            case TAME: return "&6🦴";
+            case FISH: return "&b🎣";
+            case CRAFT: return "&e🔨";
+            case SMELT: return "&6🔥";
+            default: return "&7⭐";
+        }
     }
     
     /**
@@ -286,13 +283,57 @@ public class ObjectivesGUI implements Listener {
     }
     
     /**
-     * Setup navigation with HeadDatabase support
+     * Setup navigation with pagination support
      */
     private void setupNavigation() {
-        // Back button with HeadDatabase
+        // Previous page button (slot 0)
+        if (currentPage > 0) {
+            ItemStack prevItem;
+            if (headDatabaseAvailable) {
+                prevItem = createPlayerHead("hdb:8254"); // Left arrow
+            } else {
+                prevItem = new ItemStack(Material.ARROW);
+            }
+            
+            ItemMeta meta = prevItem.getItemMeta();
+            if (meta != null) {
+                meta.setDisplayName(plugin.getConfigManager().translateColorCodes("&e&l← Previous Page"));
+                List<String> lore = new ArrayList<>();
+                lore.add(plugin.getConfigManager().translateColorCodes("&7Go to page " + currentPage));
+                lore.add("");
+                lore.add(plugin.getConfigManager().translateColorCodes("&e▶ Click to go to previous page"));
+                meta.setLore(lore);
+                prevItem.setItemMeta(meta);
+            }
+            inventory.setItem(0, prevItem);
+        }
+        
+        // Next page button (slot 8)
+        if (currentPage < getTotalPages() - 1) {
+            ItemStack nextItem;
+            if (headDatabaseAvailable) {
+                nextItem = createPlayerHead("hdb:8255"); // Right arrow
+            } else {
+                nextItem = new ItemStack(Material.SPECTRAL_ARROW);
+            }
+            
+            ItemMeta meta = nextItem.getItemMeta();
+            if (meta != null) {
+                meta.setDisplayName(plugin.getConfigManager().translateColorCodes("&e&lNext Page →"));
+                List<String> lore = new ArrayList<>();
+                lore.add(plugin.getConfigManager().translateColorCodes("&7Go to page " + (currentPage + 2)));
+                lore.add("");
+                lore.add(plugin.getConfigManager().translateColorCodes("&e▶ Click to go to next page"));
+                meta.setLore(lore);
+                nextItem.setItemMeta(meta);
+            }
+            inventory.setItem(8, nextItem);
+        }
+        
+        // Back button (slot 45)
         ItemStack backItem;
         if (headDatabaseAvailable) {
-            backItem = createPlayerHead("hdb:94738"); // Back arrow as requested
+            backItem = createPlayerHead("hdb:94736"); // Back arrow
         } else {
             backItem = new ItemStack(Material.ARROW);
         }
@@ -309,12 +350,12 @@ public class ObjectivesGUI implements Listener {
             meta.setLore(lore);
             backItem.setItemMeta(meta);
         }
-        inventory.setItem(38, backItem);
+        inventory.setItem(45, backItem);
         
-        // Close button with HeadDatabase
+        // Close button (slot 49)
         ItemStack closeItem;
         if (headDatabaseAvailable) {
-            closeItem = createPlayerHead("hdb:11834"); // Close X icon
+            closeItem = createPlayerHead("hdb:69025"); // Close X icon
         } else {
             closeItem = new ItemStack(Material.BARRIER);
         }
@@ -331,9 +372,9 @@ public class ObjectivesGUI implements Listener {
             meta.setLore(lore);
             closeItem.setItemMeta(meta);
         }
-        inventory.setItem(42, closeItem);
+        inventory.setItem(49, closeItem);
         
-        // Stats button
+        // Stats button (slot 46)
         ItemStack statsItem = new ItemStack(Material.GOLD_INGOT);
         ItemMeta statsMeta = statsItem.getItemMeta();
         if (statsMeta != null) {
@@ -356,9 +397,9 @@ public class ObjectivesGUI implements Listener {
             statsMeta.setLore(lore);
             statsItem.setItemMeta(statsMeta);
         }
-        inventory.setItem(49, statsItem);
+        inventory.setItem(46, statsItem);
         
-        // Level rewards button with HeadDatabase
+        // Level rewards button (slot 53)
         ItemStack rewardsItem;
         if (headDatabaseAvailable) {
             rewardsItem = createPlayerHead("hdb:66374"); // Level rewards icon
@@ -381,14 +422,7 @@ public class ObjectivesGUI implements Listener {
     }
     
     /**
-     * Open the GUI for the player
-     */
-    public void open() {
-        player.openInventory(inventory);
-    }
-    
-    /**
-     * Handle inventory clicks
+     * Handle inventory clicks with pagination support
      */
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
@@ -403,19 +437,48 @@ public class ObjectivesGUI implements Listener {
         int slot = event.getSlot();
         
         switch (slot) {
-            case 38: // Back button
+            case 0: // Previous page
+                if (currentPage > 0) {
+                    currentPage--;
+                    setupGUI();
+                }
+                break;
+            case 8: // Next page
+                if (currentPage < getTotalPages() - 1) {
+                    currentPage++;
+                    setupGUI();
+                }
+                break;
+            case 45: // Back button
                 player.closeInventory();
                 if (parentGUI != null) {
                     parentGUI.open();
                 }
                 break;
-            case 42: // Close button
+            case 49: // Close button
                 player.closeInventory();
                 break;
             case 53: // Level rewards button
                 player.closeInventory();
                 new LevelRewardsGUI(plugin, player, job, parentGUI).open();
                 break;
+        }
+    }
+    
+    /**
+     * Open the GUI for the player
+     */
+    public void open() {
+        player.openInventory(inventory);
+    }
+    
+    /**
+     * Navigate to a specific page
+     */
+    public void goToPage(int page) {
+        if (page >= 0 && page < getTotalPages()) {
+            this.currentPage = page;
+            setupGUI();
         }
     }
     

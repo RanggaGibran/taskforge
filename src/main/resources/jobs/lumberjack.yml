@@ -10,183 +10,370 @@ objectives:
   BREAK:
     # Oak - Reduced chances for common wood
     OAK_LOG:
-      exp: 1.0
-      money: "0.08-0.12"
+      exp: 0.4
+      money: "0.04-0.06"
       chance: 20.0
     OAK_WOOD:
-      exp: 1.0
-      money: "0.08-0.12"
+      exp: 0.4
+      money: "0.04-0.06"
       chance: 20.0
     STRIPPED_OAK_LOG:
-      exp: 1.2
-      money: "0.10-0.14"
+      exp: 0.5
+      money: "0.05-0.07"
       chance: 25.0
     STRIPPED_OAK_WOOD:
-      exp: 1.2
-      money: "0.10-0.14"
+      exp: 0.5
+      money: "0.05-0.07"
       chance: 25.0
       
     # Birch - Moderate chances
     BIRCH_LOG:
-      exp: 1.1
-      money: "0.09-0.13"
+      exp: 0.4
+      money: "0.045-0.065"
       chance: 22.0
     BIRCH_WOOD:
-      exp: 1.1
-      money: "0.09-0.13"
+      exp: 0.4
+      money: "0.045-0.065"
       chance: 22.0
     STRIPPED_BIRCH_LOG:
-      exp: 1.3
-      money: "0.11-0.15"
+      exp: 0.5
+      money: "0.055-0.075"
       chance: 27.0
     STRIPPED_BIRCH_WOOD:
-      exp: 1.3
-      money: "0.11-0.15"
-      chance: 52.0
+      exp: 0.5
+      money: "0.055-0.075"
+      chance: 27.0
       
     # Spruce
     SPRUCE_LOG:
-      exp: 1.2
-      money: "0.10-0.14"
+      exp: 0.5
+      money: "0.05-0.07"
       chance: 45.0
     SPRUCE_WOOD:
-      exp: 1.2
-      money: "0.10-0.14"
+      exp: 0.5
+      money: "0.05-0.07"
       chance: 45.0
     STRIPPED_SPRUCE_LOG:
-      exp: 1.4
-      money: "0.12-0.16"
+      exp: 0.6
+      money: "0.06-0.08"
       chance: 55.0
     STRIPPED_SPRUCE_WOOD:
-      exp: 1.4
-      money: "0.12-0.16"
+      exp: 0.6
+      money: "0.06-0.08"
       chance: 55.0
       
     # Jungle
     JUNGLE_LOG:
-      exp: 1.5
-      money: "0.13-0.17"
+      exp: 0.6
+      money: "0.065-0.085"
       chance: 60.0
     JUNGLE_WOOD:
-      exp: 1.5
-      money: "0.13-0.17"
+      exp: 0.6
+      money: "0.065-0.085"
       chance: 60.0
     STRIPPED_JUNGLE_LOG:
-      exp: 1.7
-      money: "0.15-0.19"
+      exp: 0.7
+      money: "0.075-0.095"
       chance: 78.0
     STRIPPED_JUNGLE_WOOD:
-      exp: 1.7
-      money: "0.15-0.19"
+      exp: 0.7
+      money: "0.075-0.095"
       chance: 78.0
       
     # Acacia
     ACACIA_LOG:
-      exp: 1.3
-      money: "0.11-0.15"
+      exp: 0.5
+      money: "0.055-0.075"
       chance: 76.0
     ACACIA_WOOD:
-      exp: 1.3
-      money: "0.11-0.15"
+      exp: 0.5
+      money: "0.055-0.075"
       chance: 76.0
     STRIPPED_ACACIA_LOG:
-      exp: 1.5
-      money: "0.13-0.17"
+      exp: 0.6
+      money: "0.065-0.085"
       chance: 76.0
     STRIPPED_ACACIA_WOOD:
-      exp: 1.5
-      money: "0.13-0.17"
+      exp: 0.6
+      money: "0.065-0.085"
       chance: 76.0
       
     # Dark Oak
     DARK_OAK_LOG:
-      exp: 1.6
-      money: "0.14-0.18"
+      exp: 0.7
+      money: "0.07-0.09"
       chance: 80.0
     DARK_OAK_WOOD:
-      exp: 1.6
-      money: "0.14-0.18"
+      exp: 0.7
+      money: "0.07-0.09"
       chance: 80.0
     STRIPPED_DARK_OAK_LOG:
-      exp: 1.8
-      money: "0.16-0.20"
+      exp: 0.8
+      money: "0.08-0.10"
       chance: 80.0
     STRIPPED_DARK_OAK_WOOD:
-      exp: 1.8
-      money: "0.16-0.20"
+      exp: 0.8
+      money: "0.08-0.10"
       chance: 80.0
       
     # Mangrove
     MANGROVE_LOG:
-      exp: 1.8
-      money: "0.16-0.20"
+      exp: 0.8
+      money: "0.08-0.10"
       chance: 82.0
     MANGROVE_WOOD:
-      exp: 1.8
-      money: "0.16-0.20"
+      exp: 0.8
+      money: "0.08-0.10"
       chance: 82.0
     STRIPPED_MANGROVE_LOG:
-      exp: 2.0
-      money: "0.18-0.22"
+      exp: 0.9
+      money: "0.09-0.11"
       chance: 82.0
     STRIPPED_MANGROVE_WOOD:
-      exp: 2.0
-      money: "0.18-0.22"
+      exp: 0.9
+      money: "0.09-0.11"
       chance: 82.0
     MANGROVE_ROOTS:
-      exp: 1.0
-      money: "0.06-0.10"
+      exp: 0.4
+      money: "0.03-0.05"
       chance: 70.0
       
     # Cherry (1.20+)
     CHERRY_LOG:
-      exp: 1.9
-      money: "0.17-0.21"
+      exp: 0.8
+      money: "0.085-0.105"
       chance: 83.0
     CHERRY_WOOD:
-      exp: 1.9
-      money: "0.17-0.21"
+      exp: 0.8
+      money: "0.085-0.105"
       chance: 83.0
     STRIPPED_CHERRY_LOG:
-      exp: 2.1
-      money: "0.19-0.23"
+      exp: 0.9
+      money: "0.095-0.115"
       chance: 83.0
     STRIPPED_CHERRY_WOOD:
-      exp: 2.1
-      money: "0.19-0.23"
+      exp: 0.9
+      money: "0.095-0.115"
       chance: 83.0
+      
+    # Pale Oak (1.21+)
+    PALE_OAK_LOG:
+      exp: 0.9
+      money: "0.09-0.11"
+      chance: 84.0
+    PALE_OAK_WOOD:
+      exp: 0.9
+      money: "0.09-0.11"
+      chance: 84.0
+    STRIPPED_PALE_OAK_LOG:
+      exp: 0.9
+      money: "0.10-0.12"
+      chance: 84.0
+    STRIPPED_PALE_OAK_WOOD:
+      exp: 0.9
+      money: "0.10-0.12"
+      chance: 84.0
       
     # Nether stems
     CRIMSON_STEM:
-      exp: 2.5
-      money: "0.25-0.35"
+      exp: 0.8
+      money: "0.125-0.175"
       chance: 85.0
     WARPED_STEM:
-      exp: 2.5
-      money: "0.25-0.35"
+      exp: 0.8
+      money: "0.125-0.175"
       chance: 85.0
     STRIPPED_CRIMSON_STEM:
-      exp: 2.8
-      money: "0.30-0.40"
+      exp: 0.9
+      money: "0.15-0.20"
       chance: 85.0
     STRIPPED_WARPED_STEM:
-      exp: 2.8
-      money: "0.30-0.40"
+      exp: 0.9
+      money: "0.15-0.20"
       chance: 85.0
+    
+    # Nether hyphae
+    CRIMSON_HYPHAE:
+      exp: 0.8
+      money: "0.115-0.165"
+      chance: 83.0
+    WARPED_HYPHAE:
+      exp: 0.8
+      money: "0.115-0.165"
+      chance: 83.0
+    STRIPPED_CRIMSON_HYPHAE:
+      exp: 0.9
+      money: "0.14-0.19"
+      chance: 83.0
+    STRIPPED_WARPED_HYPHAE:
+      exp: 0.9
+      money: "0.14-0.19"
+      chance: 83.0
+    
+    # Leaves
+    OAK_LEAVES:
+      exp: 0.3
+      money: "0.02-0.04"
+      chance: 15.0
+    BIRCH_LEAVES:
+      exp: 0.3
+      money: "0.02-0.04"
+      chance: 15.0
+    SPRUCE_LEAVES:
+      exp: 0.3
+      money: "0.02-0.04"
+      chance: 15.0
+    JUNGLE_LEAVES:
+      exp: 0.4
+      money: "0.03-0.05"
+      chance: 20.0
+    ACACIA_LEAVES:
+      exp: 0.3
+      money: "0.02-0.04"
+      chance: 15.0
+    DARK_OAK_LEAVES:
+      exp: 0.4
+      money: "0.03-0.05"
+      chance: 20.0
+    MANGROVE_LEAVES:
+      exp: 0.5
+      money: "0.04-0.06"
+      chance: 25.0
+    CHERRY_LEAVES:
+      exp: 0.5
+      money: "0.04-0.06"
+      chance: 25.0
+    PALE_OAK_LEAVES:
+      exp: 0.5
+      money: "0.04-0.06"
+      chance: 25.0
+    AZALEA_LEAVES:
+      exp: 0.6
+      money: "0.05-0.07"
+      chance: 30.0
+    FLOWERING_AZALEA_LEAVES:
+      exp: 0.8
+      money: "0.06-0.08"
+      chance: 35.0
 
 level_rewards:
+  # Dynamic level rewards - Crate keys for most levels
+  '2':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 2!"
+  '3':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 3!"
+  '4':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 4!"
   '5':
     type: "MONEY"
     value: 100.0
     message: "&aCongratulations! You earned &e$100&a for reaching Lumberjack Level 5!"
+  '6':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 6!"
+  '7':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 7!"
+  '8':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 8!"
+  '9':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 9!"
   '10':
     type: "MONEY"
     value: 250.0
     message: "&aCongratulations! You earned &e$250&a for reaching Lumberjack Level 10!"
+  '11':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 11!"
+  '12':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 12!"
+  '13':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 13!"
+  '14':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 14!"
+  '15':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Lumberjack Level 15!"
+  '16':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 16!"
+  '17':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 17!"
+  '18':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 18!"
+  '19':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 19!"
+  '20':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Lumberjack Level 20!"
+  '21':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 21!"
+  '22':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 22!"
+  '23':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 23!"
+  '24':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 24!"
   '25':
     type: "MONEY"
     value: 1000.0
     message: "&aCongratulations! You earned &e$1000&a for reaching Lumberjack Level 25!"
+  '26':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 26!"
+  '27':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 27!"
+  '28':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 28!"
+  '29':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Lumberjack Level 29!"
+  '30':
+    type: "COMMAND"
+    value: "crate key give %player% wish 3"
+    message: "&aCongratulations! You earned &e3 Wish Crate Keys&a for reaching Lumberjack Level 30!"
   '50':
     type: "EFFECT"
     value: "PARTICLE:HAPPY_VILLAGER"

@@ -208,18 +208,17 @@ public class SalaryManager {
         String currencySymbol = plugin.getConfigManager().getCurrencySymbol();
         String salaryMessage = plugin.getConfigManager().getConfig().getString("salary_system.payout_message", 
             "&a💰 Salary Payout: &e%amount%");
-        
+
         // Replace placeholders
         salaryMessage = salaryMessage.replace("%amount%", currencySymbol + String.format("%.2f", amount));
+        // FIX: Translate color codes before sending!
         salaryMessage = plugin.getConfigManager().translateColorCodes(salaryMessage);
-        
-        // Use notification manager with salary-specific settings
+
         String notificationType = plugin.getConfigManager().getConfig().getString("salary_system.notification_type", "chat");
-        
         if ("bossbar".equalsIgnoreCase(notificationType)) {
             plugin.getNotificationManager().sendBossbarNotification(player, salaryMessage);
         } else {
-            player.sendMessage(salaryMessage);
+            player.sendMessage(salaryMessage); // Sudah berwarna!
         }
     }
     

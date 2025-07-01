@@ -27,6 +27,9 @@ import id.rnggagib.taskforge.utils.TimeUtils;
 /**
  * Professional Jobs Browser GUI - Main hub for job discovery and management
  */
+/**
+ * Professional Jobs Browser GUI - Main hub for job discovery and management
+ */
 public class JobsGUI implements Listener {
     
     private final TaskForgePlugin plugin;
@@ -100,8 +103,8 @@ public class JobsGUI implements Listener {
         
         // Bottom section - leave space for navigation
         for (int i = 36; i < 45; i++) {
-            if (i != 38 && i != 40 && i != 42) { // Leave space for nav buttons
-                if (i == 37 || i == 39 || i == 41 || i == 43) {
+            if (i != 38 && i != 39 && i != 40 && i != 42) { // Leave space for nav buttons
+                if (i == 37 || i == 41 || i == 43) {
                     inventory.setItem(i, accent);
                 } else {
                     inventory.setItem(i, background);
@@ -257,6 +260,10 @@ public class JobsGUI implements Listener {
         // Refresh button (slot 38 - bottom left area)
         ItemStack refreshItem = createRefreshButton();
         inventory.setItem(38, refreshItem);
+        
+        // Salary button (slot 39 - left center)
+        ItemStack salaryItem = createSalaryButton();
+        inventory.setItem(39, salaryItem);
         
         // Help button (slot 40 - bottom center)
         ItemStack helpItem = createHelpButton();
@@ -500,6 +507,63 @@ public class JobsGUI implements Listener {
     }
     
     /**
+     * Create salary button using HeadDatabase
+     */
+    private ItemStack createSalaryButton() {
+        ItemStack item;
+        
+        // Try to use HeadDatabase for salary icon (hdb:54233)
+        if (headDatabaseAvailable) {
+            item = createPlayerHead("hdb:54233"); // Money/coin icon
+        } else {
+            item = new ItemStack(Material.GOLD_INGOT);
+        }
+        
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(plugin.getConfigManager().translateColorCodes("&6&l$ &6Salary Information"));
+            
+            List<String> lore = new ArrayList<>();
+            lore.add("");
+            
+            // Get pending salary if salary system is enabled
+            if (plugin.getSalaryManager() != null) {
+                double pendingSalary = plugin.getSalaryManager().getPendingSalary(player.getUniqueId());
+                
+                lore.add(plugin.getConfigManager().translateColorCodes("&e&l💰 SALARY STATUS"));
+                lore.add(plugin.getConfigManager().translateColorCodes("&8├ &7Pending Salary: &a$" + String.format("%.2f", pendingSalary)));
+                
+                // Get payout interval information
+                int intervalMinutes = plugin.getConfigManager().getConfig().getInt("salary.payout_interval_minutes", 60);
+                lore.add(plugin.getConfigManager().translateColorCodes("&8├ &7Payout Interval: &b" + intervalMinutes + " minutes"));
+                
+                // Show status
+                if (pendingSalary > 0) {
+                    lore.add(plugin.getConfigManager().translateColorCodes("&8└ &7Status: &a&lEarnings Pending"));
+                } else {
+                    lore.add(plugin.getConfigManager().translateColorCodes("&8└ &7Status: &7No pending earnings"));
+                }
+                lore.add("");
+                
+                lore.add(plugin.getConfigManager().translateColorCodes("&f&oEarn money by completing job objectives."));
+                lore.add(plugin.getConfigManager().translateColorCodes("&f&oSalaries are paid automatically every " + intervalMinutes + " minutes."));
+            } else {
+                lore.add(plugin.getConfigManager().translateColorCodes("&c&l⚠ SALARY SYSTEM DISABLED"));
+                lore.add(plugin.getConfigManager().translateColorCodes("&7The salary system is currently disabled."));
+                lore.add(plugin.getConfigManager().translateColorCodes("&7Job rewards are paid instantly."));
+            }
+            
+            lore.add("");
+            lore.add(plugin.getConfigManager().translateColorCodes("&e▶ Salary information"));
+            
+            meta.setLore(lore);
+            item.setItemMeta(meta);
+        }
+        
+        return item;
+    }
+    
+    /**
      * Open the GUI for the player
      */
     public void open() {
@@ -537,6 +601,12 @@ public class JobsGUI implements Listener {
         
         if (slot == 40) { // Help button
             // Help info is already shown in the item lore
+            return;
+        }
+        
+        if (slot == 39) { // Salary button
+            // Show salary information - already displayed in button lore
+            // Could optionally open a detailed salary GUI in the future
             return;
         }
         

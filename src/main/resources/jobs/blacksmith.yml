@@ -1,0 +1,315 @@
+# Blacksmith Job Configuration
+# Forge weapons, tools, and armor with fire and steel
+
+display_name: "&8🔨 Blacksmith"
+description: "&fForge weapons, tools, and armor with fire and steel."
+player_head_texture: "hdb:111950"
+item_icon: "ANVIL"
+
+objectives:
+  CRAFT:
+    # Tools - Iron
+    IRON_PICKAXE:
+      exp: 0.8
+      money: "0.40-0.75"
+      chance: 85.0
+    IRON_AXE:
+      exp: 0.7
+      money: "0.35-0.70"
+      chance: 85.0
+    IRON_SHOVEL:
+      exp: 0.6
+      money: "0.30-0.60"
+      chance: 83.0
+    IRON_HOE:
+      exp: 0.6
+      money: "0.25-0.55"
+      chance: 82.0
+    IRON_SWORD:
+      exp: 0.8
+      money: "0.45-0.80"
+      chance: 87.0
+    
+    # Tools - Diamond
+    DIAMOND_PICKAXE:
+      exp: 0.9
+      money: "0.65-0.90"
+      chance: 92.0
+    DIAMOND_AXE:
+      exp: 0.9
+      money: "0.60-0.85"
+      chance: 92.0
+    DIAMOND_SHOVEL:
+      exp: 0.8
+      money: "0.55-0.80"
+      chance: 90.0
+    DIAMOND_HOE:
+      exp: 0.8
+      money: "0.50-0.75"
+      chance: 88.0
+    DIAMOND_SWORD:
+      exp: 0.9
+      money: "0.70-0.95"
+      chance: 95.0
+    
+    # Tools - Netherite
+    NETHERITE_PICKAXE:
+      exp: 0.95
+      money: "0.85-0.99"
+      chance: 98.0
+    NETHERITE_AXE:
+      exp: 0.94
+      money: "0.82-0.97"
+      chance: 98.0
+    NETHERITE_SHOVEL:
+      exp: 0.92
+      money: "0.78-0.94"
+      chance: 96.0
+    NETHERITE_HOE:
+      exp: 0.91
+      money: "0.75-0.92"
+      chance: 95.0
+    NETHERITE_SWORD:
+      exp: 0.96
+      money: "0.88-0.99"
+      chance: 99.0
+    
+    # Armor - Iron
+    IRON_HELMET:
+      exp: 0.6
+      money: "0.30-0.60"
+      chance: 83.0
+    IRON_CHESTPLATE:
+      exp: 0.8
+      money: "0.60-0.80"
+      chance: 87.0
+    IRON_LEGGINGS:
+      exp: 0.7
+      money: "0.50-0.70"
+      chance: 85.0
+    IRON_BOOTS:
+      exp: 0.6
+      money: "0.25-0.50"
+      chance: 82.0
+    
+    # Armor - Diamond
+    DIAMOND_HELMET:
+      exp: 0.8
+      money: "0.55-0.75"
+      chance: 90.0
+    DIAMOND_CHESTPLATE:
+      exp: 0.9
+      money: "0.75-0.95"
+      chance: 95.0
+    DIAMOND_LEGGINGS:
+      exp: 0.8
+      money: "0.65-0.85"
+      chance: 92.0
+    DIAMOND_BOOTS:
+      exp: 0.7
+      money: "0.50-0.70"
+      chance: 88.0
+    
+    # Armor - Netherite
+    NETHERITE_HELMET:
+      exp: 0.9
+      money: "0.80-0.95"
+      chance: 96.0
+    NETHERITE_CHESTPLATE:
+      exp: 0.95
+      money: "0.90-0.99"
+      chance: 99.0
+    NETHERITE_LEGGINGS:
+      exp: 17.0
+      money: "60.0-95.0"
+      chance: 98.0
+    NETHERITE_BOOTS:
+      exp: 11.0
+      money: "35.0-60.0"
+      chance: 95.0
+    
+    # Utility Items
+    BUCKET:
+      exp: 1.5
+      money: "3.0-7.0"
+      chance: 78.0
+    IRON_DOOR:
+      exp: 2.0
+      money: "4.0-8.0"
+      chance: 80.0
+    IRON_TRAPDOOR:
+      exp: 0.5
+      money: "0.175-0.375"
+      chance: 79.0
+    SHEARS:
+      exp: 0.6
+      money: "0.225-0.45"
+      chance: 81.0
+    FLINT_AND_STEEL:
+      exp: 0.5
+      money: "0.15-0.325"
+      chance: 77.0
+    
+    # Weapons & Ranged
+    BOW:
+      exp: 0.8
+      money: "0.40-0.75"
+      chance: 85.0
+    CROSSBOW:
+      exp: 0.8
+      money: "0.50-0.90"
+      chance: 88.0
+    TRIDENT:
+      exp: 0.9
+      money: "0.75-0.95"
+      chance: 95.0
+    
+  SMELT:
+    # Smelting metals for blacksmithing
+    IRON_INGOT:
+      exp: 0.6
+      money: "0.10-0.20"
+      chance: 75.0
+    GOLD_INGOT:
+      exp: 0.7
+      money: "0.15-0.30"
+      chance: 80.0
+    COPPER_INGOT:
+      exp: 0.5
+      money: "0.075-0.175"
+      chance: 72.0
+    NETHERITE_SCRAP:
+      exp: 8.0
+      money: "20.0-35.0"
+      chance: 92.0
+
+level_rewards:
+  # Dynamic level rewards - Crate keys for most levels
+  '2':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 2!"
+  '3':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 3!"
+  '4':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 4!"
+  '5':
+    type: "MONEY"
+    value: 200.0
+    message: "&aCongratulations! You earned &e$200&a for reaching Blacksmith Level 5!"
+  '6':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 6!"
+  '7':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 7!"
+  '8':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 8!"
+  '9':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 9!"
+  '10':
+    type: "MONEY"
+    value: 400.0
+    message: "&aCongratulations! You earned &e$400&a for reaching Blacksmith Level 10!"
+  '11':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 11!"
+  '12':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 12!"
+  '13':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 13!"
+  '14':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 14!"
+  '15':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Blacksmith Level 15!"
+  '16':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 16!"
+  '17':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 17!"
+  '18':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 18!"
+  '19':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 19!"
+  '20':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Blacksmith Level 20!"
+  '21':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 21!"
+  '22':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 22!"
+  '23':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 23!"
+  '24':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 24!"
+  '25':
+    type: "MONEY"
+    value: 1500.0
+    message: "&aCongratulations! You earned &e$1500&a for reaching Blacksmith Level 25!"
+  '26':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 26!"
+  '27':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 27!"
+  '28':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 28!"
+  '29':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Blacksmith Level 29!"
+  '30':
+    type: "COMMAND"
+    value: "crate key give %player% wish 3"
+    message: "&aCongratulations! You earned &e3 Wish Crate Keys&a for reaching Blacksmith Level 30!"
+  '50':
+    type: "EFFECT"
+    value: "PARTICLE:FIREWORKS_SPARK"
+    message: "&dAMAZING! You reached Level 50 and unlocked special particle effects!"
+  '75':
+    type: "MONEY"
+    value: 6000.0
+    message: "&6INCREDIBLE! You earned &e$6000&6 for reaching Blacksmith Level 75!"
+  '100':
+    type: "TITLE"
+    value: "&8[Master Blacksmith]"
+    message: "&6LEGENDARY! You have become a Master Blacksmith!"

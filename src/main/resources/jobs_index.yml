@@ -9,7 +9,7 @@ jobs:
   - farmer      # Farmer job configuration (jobs/farmer.yml)
   - hunter      # Hunter job configuration (jobs/hunter.yml)
   - fisherman   # Fisherman job configuration (jobs/fisherman.yml)
-  - builder     # Builder job configuration (jobs/builder.yml)
+  - blacksmith  # Blacksmith job configuration (jobs/blacksmith.yml)
 
 # Job loading settings
 settings:

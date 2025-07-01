@@ -58,35 +58,43 @@ public class NotificationManager {
         double experience = objective.getExperience();
         double money = objective.getRandomMoney();
         
+        // Check if salary system is enabled to modify the money display
+        boolean salaryEnabled = plugin.getSalaryManager().isSalarySystemEnabled();
+        
         String notificationType = plugin.getConfigManager().getConfig().getString("notifications.type", "bossbar");
         
         if ("chat".equalsIgnoreCase(notificationType)) {
-            sendChatNotification(player, jobName, experience, money);
+            sendChatNotification(player, jobName, experience, money, salaryEnabled);
         } else {
-            sendBossBarNotification(player, jobName, experience, money);
+            sendBossBarNotification(player, jobName, experience, money, salaryEnabled);
         }
     }
     
     /**
      * Send chat notification
      */
-    private void sendChatNotification(Player player, String jobName, double experience, double money) {
-        if (experience > 0 && money > 0) {
-            String currencySymbol = plugin.getConfigManager().getCurrencySymbol();
-            String message = plugin.getConfigManager().translateColorCodes(
-                "&a+&f" + String.format("%.1f", experience) + " &aEXP &7| &e+" + currencySymbol + String.format("%.2f", money) + " &7(&6" + jobName + "&7)");
-            player.sendMessage(message);
-        } else if (experience > 0) {
-            String message = plugin.getConfigManager().translateColorCodes(
-                "&a+&f" + String.format("%.1f", experience) + " &aEXP &7(&6" + jobName + "&7)");
-            player.sendMessage(message);
+    private void sendChatNotification(Player player, String jobName, double experience, double money, boolean salaryEnabled) {
+        String currencySymbol = plugin.getConfigManager().getCurrencySymbol();
+        String moneyText = currencySymbol + String.format("%.2f", money);
+
+        String message;
+        if (salaryEnabled) {
+            // FIX: Translate color codes before sending!
+            message = plugin.getConfigManager().translateColorCodes(
+                "&e" + player.getName() + " &ahas &e" + moneyText + "&a pending."
+            );
+        } else {
+            message = plugin.getConfigManager().translateColorCodes(
+                "&a+" + moneyText + " &7(" + jobName + ")"
+            );
         }
+        player.sendMessage(message);
     }
     
     /**
      * Send bossbar notification with anti-spam (accumulate rewards)
      */
-    private void sendBossBarNotification(Player player, String jobName, double experience, double money) {
+    private void sendBossBarNotification(Player player, String jobName, double experience, double money, boolean salaryEnabled) {
         UUID playerUUID = player.getUniqueId();
         
         // Cancel existing task if any
@@ -99,6 +107,7 @@ public class NotificationManager {
         AccumulatedRewards accumulated = pendingRewards.computeIfAbsent(playerUUID, 
             k -> new AccumulatedRewards());
         accumulated.addReward(experience, money);
+        accumulated.setSalaryEnabled(salaryEnabled);
         
         // Schedule task to display accumulated rewards
         BukkitTask task = new BukkitRunnable() {
@@ -106,7 +115,7 @@ public class NotificationManager {
             public void run() {
                 AccumulatedRewards rewards = pendingRewards.remove(playerUUID);
                 if (rewards != null) {
-                    displayBossBar(player, jobName, rewards.totalExperience, rewards.totalMoney);
+                    displayBossBar(player, jobName, rewards.totalExperience, rewards.totalMoney, rewards.isSalaryEnabled);
                 }
                 rewardTasks.remove(playerUUID);
             }
@@ -118,7 +127,7 @@ public class NotificationManager {
     /**
      * Display bossbar with rewards
      */
-    private void displayBossBar(Player player, String jobName, double experience, double money) {
+    private void displayBossBar(Player player, String jobName, double experience, double money, boolean salaryEnabled) {
         UUID playerUUID = player.getUniqueId();
         
         // Remove existing bossbar if any
@@ -128,8 +137,12 @@ public class NotificationManager {
         String message;
         if (experience > 0 && money > 0) {
             String currencySymbol = plugin.getConfigManager().getCurrencySymbol();
+            String moneyText = currencySymbol + String.format("%.2f", money);
+            if (salaryEnabled) {
+                moneyText += " (pending)";
+            }
             message = plugin.getConfigManager().translateColorCodes(
-                "&a+&f" + String.format("%.1f", experience) + " &aEXP &7| &e+" + currencySymbol + String.format("%.2f", money) + " &7(&6" + jobName + "&7)");
+                "&a+&f" + String.format("%.1f", experience) + " &aEXP &7| &e+" + moneyText + " &7(&6" + jobName + "&7)");
         } else if (experience > 0) {
             message = plugin.getConfigManager().translateColorCodes(
                 "&a+&f" + String.format("%.1f", experience) + " &aEXP &7(&6" + jobName + "&7)");
@@ -211,10 +224,15 @@ public class NotificationManager {
     private static class AccumulatedRewards {
         double totalExperience = 0.0;
         double totalMoney = 0.0;
+        boolean isSalaryEnabled = false;
         
         void addReward(double experience, double money) {
             this.totalExperience += experience;
             this.totalMoney += money;
+        }
+        
+        void setSalaryEnabled(boolean salaryEnabled) {
+            this.isSalaryEnabled = salaryEnabled;
         }
     }
 
@@ -235,7 +253,15 @@ public class NotificationManager {
      * Send simple chat notification
      */
     private void sendSimpleChatNotification(Player player, String rewardMessage) {
-        String message = plugin.getConfigManager().translateColorCodes("&a" + rewardMessage);
+        // Check if message already has color codes
+        String message;
+        if (rewardMessage.contains("&")) {
+            // Message already has color codes, just translate them
+            message = plugin.getConfigManager().translateColorCodes(rewardMessage);
+        } else {
+            // Message doesn't have color codes, add default green color
+            message = plugin.getConfigManager().translateColorCodes("&a" + rewardMessage);
+        }
         player.sendMessage(message);
     }
     
@@ -248,8 +274,15 @@ public class NotificationManager {
         // Remove existing bossbar if any
         removeBossBar(player);
         
-        // Create message
-        String message = plugin.getConfigManager().translateColorCodes("&a" + rewardMessage);
+        // Create message - check if message already has color codes
+        String message;
+        if (rewardMessage.contains("&")) {
+            // Message already has color codes, just translate them
+            message = plugin.getConfigManager().translateColorCodes(rewardMessage);
+        } else {
+            // Message doesn't have color codes, add default green color
+            message = plugin.getConfigManager().translateColorCodes("&a" + rewardMessage);
+        }
         
         // Create bossbar
         BossBar bossBar = Bukkit.createBossBar(message, BarColor.GREEN, BarStyle.SOLID);

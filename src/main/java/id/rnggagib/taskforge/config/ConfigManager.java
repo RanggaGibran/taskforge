@@ -95,8 +95,8 @@ public class ConfigManager {
             logger.info("Created jobs folder");
         }
         
-        // List of job files to copy
-        String[] jobFiles = {"miner.yml", "lumberjack.yml", "farmer.yml", "hunter.yml", "fisherman.yml", "builder.yml"};
+        // Get job files list from jobs_index.yml
+        String[] jobFiles = getJobFilesFromIndex();
         
         for (String jobFile : jobFiles) {
             File file = new File(jobsFolder, jobFile);
@@ -113,6 +113,39 @@ public class ConfigManager {
                     logger.severe("Failed to save default jobs/" + jobFile + ": " + e.getMessage());
                 }
             }
+        }
+    }
+    
+    /**
+     * Get list of job files from jobs_index.yml
+     */
+    private String[] getJobFilesFromIndex() {
+        // Default fallback list
+        String[] defaultJobFiles = {"miner.yml", "lumberjack.yml", "farmer.yml", "hunter.yml", "fisherman.yml", "blacksmith.yml"};
+        
+        File jobsIndexFile = new File(plugin.getDataFolder(), "jobs_index.yml");
+        if (!jobsIndexFile.exists()) {
+            logger.info("jobs_index.yml not found, using default job files list");
+            return defaultJobFiles;
+        }
+        
+        try {
+            FileConfiguration jobsIndexConfig = YamlConfiguration.loadConfiguration(jobsIndexFile);
+            java.util.List<String> jobNames = jobsIndexConfig.getStringList("jobs");
+            
+            if (jobNames.isEmpty()) {
+                logger.warning("No jobs found in jobs_index.yml, using default list");
+                return defaultJobFiles;
+            }
+            
+            // Convert job names to file names (add .yml extension)
+            return jobNames.stream()
+                    .map(name -> name + ".yml")
+                    .toArray(String[]::new);
+                    
+        } catch (Exception e) {
+            logger.warning("Error reading jobs_index.yml, using default list: " + e.getMessage());
+            return defaultJobFiles;
         }
     }
     

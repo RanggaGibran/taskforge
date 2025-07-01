@@ -10,46 +10,46 @@ objectives:
   FISH:
     # Fish
     COD:
-      exp: 1.5
-      money: "0.12-0.18"
+      exp: 0.6
+      money: "0.06-0.09"
       chance: 80.0
     SALMON:
-      exp: 1.8
-      money: "0.15-0.21"
+      exp: 0.7
+      money: "0.075-0.105"
       chance: 78.0
     TROPICAL_FISH:
-      exp: 2.0
-      money: "0.20-0.30"
+      exp: 0.8
+      money: "0.10-0.15"
       chance: 75.0
     PUFFERFISH:
-      exp: 2.5
-      money: "0.25-0.35"
+      exp: 0.9
+      money: "0.125-0.175"
       chance: 70.0
     
     # Treasure
     BOW:
-      exp: 10.0
-      money: "1.50-2.50"
+      exp: 0.9
+      money: "0.75-0.95"
       chance: 95.0
     ENCHANTED_BOOK:
-      exp: 15.0
-      money: "4.00-6.00"
+      exp: 0.95
+      money: "0.85-0.99"
       chance: 98.0
     FISHING_ROD:
-      exp: 8.0
-      money: "1.20-1.80"
+      exp: 0.9
+      money: "0.60-0.90"
       chance: 92.0
     NAME_TAG:
-      exp: 12.0
-      money: "2.50-3.50"
+      exp: 0.9
+      money: "0.65-0.85"
       chance: 95.0
     NAUTILUS_SHELL:
-      exp: 20.0
-      money: "6.00-10.00"
+      exp: 0.99
+      money: "0.90-0.99"
       chance: 98.0
     SADDLE:
-      exp: 12.0
-      money: "3.00-5.00"
+      exp: 0.9
+      money: "0.70-0.90"
       chance: 95.0
     
     # Junk (lower rewards)
@@ -89,20 +89,137 @@ objectives:
       exp: 1.0
       money: "0.08-0.12"
       chance: 60.0
+    LILY_PAD:
+      exp: 0.6
+      money: "0.020-0.030"
+      chance: 45.0
+    BAMBOO:
+      exp: 0.4
+      money: "0.010-0.015"
+      chance: 38.0
+    INK_SAC:
+      exp: 0.8
+      money: "0.025-0.035"
+      chance: 50.0
 
 level_rewards:
+  # Dynamic level rewards - Crate keys for most levels
+  '2':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 2!"
+  '3':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 3!"
+  '4':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 4!"
   '5':
     type: "MONEY"
     value: 120.0
     message: "&aCongratulations! You earned &e$120&a for reaching Fisherman Level 5!"
+  '6':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 6!"
+  '7':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 7!"
+  '8':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 8!"
+  '9':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 9!"
   '10':
     type: "MONEY"
     value: 280.0
     message: "&aCongratulations! You earned &e$280&a for reaching Fisherman Level 10!"
+  '11':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 11!"
+  '12':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 12!"
+  '13':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 13!"
+  '14':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 14!"
+  '15':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Fisherman Level 15!"
+  '16':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 16!"
+  '17':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 17!"
+  '18':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 18!"
+  '19':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 19!"
+  '20':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Fisherman Level 20!"
+  '21':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 21!"
+  '22':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 22!"
+  '23':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 23!"
+  '24':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 24!"
   '25':
     type: "MONEY"
     value: 1100.0
     message: "&aCongratulations! You earned &e$1100&a for reaching Fisherman Level 25!"
+  '26':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 26!"
+  '27':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 27!"
+  '28':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 28!"
+  '29':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Fisherman Level 29!"
+  '30':
+    type: "COMMAND"
+    value: "crate key give %player% wish 3"
+    message: "&aCongratulations! You earned &e3 Wish Crate Keys&a for reaching Fisherman Level 30!"
   '50':
     type: "EFFECT"
     value: "PARTICLE:WATER_SPLASH"

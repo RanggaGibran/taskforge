@@ -10,55 +10,115 @@ objectives:
   KILL:
     # Hostile mobs
     ZOMBIE:
-      exp: 2.0
-      money: "0.15-0.25"
+      exp: 0.6
+      money: "0.075-0.125"
       chance: 85.0
+    ZOMBIE_VILLAGER:
+      exp: 0.7
+      money: "0.09-0.14"
+      chance: 85.0
+    HUSK:
+      exp: 0.7
+      money: "0.10-0.15"
+      chance: 85.0
+    DROWNED:
+      exp: 0.8
+      money: "0.11-0.16"
+      chance: 86.0
     SKELETON:
-      exp: 2.5
-      money: "0.20-0.30"
+      exp: 0.8
+      money: "0.10-0.15"
       chance: 85.0
+    STRAY:
+      exp: 0.8
+      money: "0.11-0.16"
+      chance: 86.0
+    BOGGED:
+      exp: 0.9
+      money: "0.125-0.175"
+      chance: 87.0
     CREEPER:
-      exp: 3.0
-      money: "0.25-0.35"
+      exp: 0.9
+      money: "0.125-0.175"
       chance: 88.0
     SPIDER:
-      exp: 2.2
-      money: "0.18-0.26"
+      exp: 0.7
+      money: "0.09-0.13"
       chance: 82.0
+    CAVE_SPIDER:
+      exp: 0.8
+      money: "0.11-0.15"
+      chance: 83.0
+    SILVERFISH:
+      exp: 0.6
+      money: "0.075-0.11"
+      chance: 80.0
     ENDERMAN:
-      exp: 5.0
-      money: "0.60-1.00"
+      exp: 0.9
+      money: "0.30-0.50"
       chance: 90.0
+    ENDERMITE:
+      exp: 0.6
+      money: "0.10-0.15"
+      chance: 80.0
+    SLIME:
+      exp: 0.6
+      money: "0.09-0.125"
+      chance: 80.0
+    PHANTOM:
+      exp: 0.9
+      money: "0.175-0.25"
+      chance: 87.0
     WITCH:
-      exp: 4.0
-      money: "0.40-0.60"
+      exp: 0.9
+      money: "0.20-0.30"
       chance: 88.0
     PILLAGER:
-      exp: 3.5
-      money: "0.30-0.50"
+      exp: 0.9
+      money: "0.15-0.25"
       chance: 87.0
     VINDICATOR:
-      exp: 4.5
-      money: "0.50-0.70"
+      exp: 0.9
+      money: "0.25-0.35"
       chance: 90.0
     EVOKER:
-      exp: 8.0
-      money: "1.20-1.80"
+      exp: 0.95
+      money: "0.60-0.90"
       chance: 95.0
     VEX:
-      exp: 3.0
-      money: "0.25-0.45"
+      exp: 0.8
+      money: "0.125-0.225"
       chance: 85.0
     RAVAGER:
-      exp: 10.0
-      money: "1.50-2.50"
+      exp: 0.95
+      money: "0.75-0.95"
       chance: 95.0
+    GUARDIAN:
+      exp: 0.9
+      money: "0.25-0.35"
+      chance: 88.0
+    ELDER_GUARDIAN:
+      exp: 0.99
+      money: "0.90-0.99"
+      chance: 98.0
+    CREAKING:
+      exp: 0.9
+      money: "0.20-0.30"
+      chance: 88.0
     
     # Nether mobs
-    ZOMBIE_PIGMAN:
-      exp: 3.5
-      money: "0.30-0.50"
+    ZOMBIFIED_PIGLIN:
+      exp: 0.9
+      money: "0.15-0.25"
       chance: 85.0
+    PIGLIN:
+      exp: 0.8
+      money: "0.125-0.20"
+      chance: 84.0
+    PIGLIN_BRUTE:
+      exp: 0.9
+      money: "0.35-0.50"
+      chance: 91.0
     BLAZE:
       exp: 4.0
       money: "0.50-0.70"
@@ -79,12 +139,20 @@ objectives:
       exp: 4.5
       money: "0.55-0.85"
       chance: 88.0
+    ZOGLIN:
+      exp: 5.0
+      money: "0.60-0.90"
+      chance: 89.0
+    STRIDER:
+      exp: 2.0
+      money: "0.15-0.25"
+      chance: 75.0
+    BREEZE:
+      exp: 4.2
+      money: "0.45-0.65"
+      chance: 88.0
     
     # End mobs
-    ENDERMITE:
-      exp: 2.0
-      money: "0.20-0.30"
-      chance: 80.0
     SHULKER:
       exp: 6.0
       money: "1.00-1.40"
@@ -104,11 +172,15 @@ objectives:
       money: 25.0
       chance: 100.0
     
-    # Passive mobs (lower rewards)
+    # Passive/Neutral mobs
     COW:
       exp: 1.0
       money: 0.1
       chance: 70.0
+    MOOSHROOM:
+      exp: 1.2
+      money: 0.12
+      chance: 72.0
     PIG:
       exp: 1.0
       money: 0.1
@@ -121,20 +193,255 @@ objectives:
       exp: 1.0
       money: 0.1
       chance: 70.0
+    RABBIT:
+      exp: 0.8
+      money: 0.08
+      chance: 65.0
+    HORSE:
+      exp: 1.5
+      money: 0.15
+      chance: 75.0
+    DONKEY:
+      exp: 1.4
+      money: 0.14
+      chance: 74.0
+    MULE:
+      exp: 1.4
+      money: 0.14
+      chance: 74.0
+    LLAMA:
+      exp: 1.3
+      money: 0.13
+      chance: 73.0
+    TRADER_LLAMA:
+      exp: 1.3
+      money: 0.13
+      chance: 73.0
+    WOLF:
+      exp: 1.5
+      money: 0.15
+      chance: 75.0
+    CAT:
+      exp: 1.2
+      money: 0.12
+      chance: 72.0
+    OCELOT:
+      exp: 1.3
+      money: 0.13
+      chance: 73.0
+    FOX:
+      exp: 1.4
+      money: 0.14
+      chance: 74.0
+    PANDA:
+      exp: 1.6
+      money: 0.16
+      chance: 76.0
+    POLAR_BEAR:
+      exp: 2.0
+      money: 0.20
+      chance: 78.0
+    GOAT:
+      exp: 1.3
+      money: 0.13
+      chance: 73.0
+    AXOLOTL:
+      exp: 1.5
+      money: 0.15
+      chance: 75.0
+    SQUID:
+      exp: 1.0
+      money: 0.10
+      chance: 70.0
+    GLOW_SQUID:
+      exp: 1.2
+      money: 0.12
+      chance: 72.0
+    TURTLE:
+      exp: 1.4
+      money: 0.14
+      chance: 74.0
+    DOLPHIN:
+      exp: 1.8
+      money: 0.18
+      chance: 77.0
+    BEE:
+      exp: 1.0
+      money: 0.10
+      chance: 70.0
+    BAT:
+      exp: 0.5
+      money: 0.05
+      chance: 60.0
+    PARROT:
+      exp: 1.1
+      money: 0.11
+      chance: 71.0
+    FROG:
+      exp: 1.0
+      money: 0.10
+      chance: 70.0
+    CAMEL:
+      exp: 1.7
+      money: 0.17
+      chance: 76.0
+    SNIFFER:
+      exp: 2.5
+      money: 0.25
+      chance: 80.0
+    ARMADILLO:
+      exp: 1.3
+      money: 0.13
+      chance: 73.0
+    ALLAY:
+      exp: 1.5
+      money: 0.15
+      chance: 75.0
+    
+    # Special/Utility mobs
+    VILLAGER:
+      exp: 0.5
+      money: 0.05
+      chance: 50.0
+    WANDERING_TRADER:
+      exp: 0.8
+      money: 0.08
+      chance: 60.0
+    IRON_GOLEM:
+      exp: 3.0
+      money: 0.30
+      chance: 85.0
+    SNOW_GOLEM:
+      exp: 1.0
+      money: 0.10
+      chance: 70.0
+    ZOMBIE_HORSE:
+      exp: 2.0
+      money: 0.20
+      chance: 78.0
+    SKELETON_HORSE:
+      exp: 2.0
+      money: 0.20
+      chance: 78.0
 
 level_rewards:
+  # Dynamic level rewards - Crate keys for most levels
+  '2':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 2!"
+  '3':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 3!"
+  '4':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 4!"
   '5':
     type: "MONEY"
     value: 150.0
     message: "&aCongratulations! You earned &e$150&a for reaching Hunter Level 5!"
+  '6':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 6!"
+  '7':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 7!"
+  '8':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 8!"
+  '9':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 9!"
   '10':
     type: "MONEY"
     value: 300.0
     message: "&aCongratulations! You earned &e$300&a for reaching Hunter Level 10!"
+  '11':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 11!"
+  '12':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 12!"
+  '13':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 13!"
+  '14':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 14!"
+  '15':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Hunter Level 15!"
+  '16':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 16!"
+  '17':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 17!"
+  '18':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 18!"
+  '19':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 19!"
+  '20':
+    type: "COMMAND"
+    value: "crate key give %player% wish 2"
+    message: "&aCongratulations! You earned &e2 Wish Crate Keys&a for reaching Hunter Level 20!"
+  '21':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 21!"
+  '22':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 22!"
+  '23':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 23!"
+  '24':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 24!"
   '25':
     type: "MONEY"
     value: 1200.0
     message: "&aCongratulations! You earned &e$1200&a for reaching Hunter Level 25!"
+  '26':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 26!"
+  '27':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 27!"
+  '28':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 28!"
+  '29':
+    type: "COMMAND"
+    value: "crate key give %player% wish 1"
+    message: "&aCongratulations! You earned &e1 Wish Crate Key&a for reaching Hunter Level 29!"
+  '30':
+    type: "COMMAND"
+    value: "crate key give %player% wish 3"
+    message: "&aCongratulations! You earned &e3 Wish Crate Keys&a for reaching Hunter Level 30!"
   '50':
     type: "EFFECT"
     value: "PARTICLE:FLAME"
