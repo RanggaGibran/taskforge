@@ -15,6 +15,7 @@ import id.rnggagib.taskforge.managers.JobManager;
 import id.rnggagib.taskforge.managers.NotificationManager;
 import id.rnggagib.taskforge.managers.PlayerDataManager;
 import id.rnggagib.taskforge.managers.SalaryManager;
+import id.rnggagib.taskforge.managers.BoosterManager;
 import id.rnggagib.taskforge.placeholders.TaskForgePlaceholderExpansion;
 import net.milkbowl.vault.economy.Economy;
 
@@ -34,6 +35,7 @@ public class TaskForgePlugin extends JavaPlugin {
     private PlayerDataManager playerDataManager;
     private NotificationManager notificationManager;
     private SalaryManager salaryManager;
+    private BoosterManager boosterManager;
     
     // Economy integration
     private Economy economy = null;
@@ -156,6 +158,7 @@ public class TaskForgePlugin extends JavaPlugin {
             playerDataManager = new PlayerDataManager(this);
             notificationManager = new NotificationManager(this);
             salaryManager = new SalaryManager(this);
+            boosterManager = new BoosterManager();
             
             // Load jobs from configuration
             jobManager.loadJobsFromConfig();
@@ -248,6 +251,10 @@ public class TaskForgePlugin extends JavaPlugin {
     
     public SalaryManager getSalaryManager() {
         return salaryManager;
+    }
+    
+    public BoosterManager getBoosterManager() {
+        return boosterManager;
     }
     
     public Economy getEconomy() {

@@ -106,6 +106,14 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
                 handleSalaryCommand(sender, args);
                 break;
                 
+            case "booster":
+                if (args.length < 2) {
+                    showBoosterHelp(sender);
+                    return true;
+                }
+                handleBoosterCommand(sender, args);
+                break;
+                
             default:
                 showHelp(sender);
                 break;
@@ -305,6 +313,7 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin resetjob <player> <job> &8- &7Reset player's job progress"));
         sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin info <player> &8- &7Show player's job information"));
         sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin salary &8- &7Salary system commands"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin booster &8- &7Booster system commands"));
         sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin clearcooldown <player> <job> &8- &7Clear job cooldown"));
         sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin checkcooldown <player> <job> &8- &7Check job cooldown"));
     }
@@ -391,7 +400,7 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
         
         if (args.length == 1) {
             // First argument - subcommands
-            String[] subCommands = {"reload", "setlevel", "addexp", "resetjob", "info", "clearcooldown", "checkcooldown", "salary"};
+            String[] subCommands = {"reload", "setlevel", "addexp", "resetjob", "info", "clearcooldown", "checkcooldown", "salary", "booster"};
             for (String subCommand : subCommands) {
                 if (subCommand.toLowerCase().startsWith(args[0].toLowerCase())) {
                     completions.add(subCommand);
@@ -418,6 +427,14 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
                         completions.add(salarySubCommand);
                     }
                 }
+            } else if ("booster".equals(subCommand)) {
+                // Booster subcommands
+                String[] boosterSubCommands = {"player", "global", "remove", "list", "clear"};
+                for (String boosterSubCommand : boosterSubCommands) {
+                    if (boosterSubCommand.toLowerCase().startsWith(args[1].toLowerCase())) {
+                        completions.add(boosterSubCommand);
+                    }
+                }
             }
         } else if (args.length == 3) {
             String subCommand = args[0].toLowerCase();
@@ -438,6 +455,128 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
                         String playerName = player.getName();
                         if (playerName != null && playerName.toLowerCase().startsWith(args[2].toLowerCase())) {
                             completions.add(playerName);
+                        }
+                    }
+                }
+            } else if ("booster".equals(subCommand)) {
+                String boosterSubCommand = args[1].toLowerCase();
+                if ("player".equals(boosterSubCommand)) {
+                    // Multiplier suggestions
+                    String[] multipliers = {"1.0", "1.5", "2.0", "2.5", "3.0", "4.0", "5.0"};
+                    for (String multiplier : multipliers) {
+                        if (multiplier.startsWith(args[2])) {
+                            completions.add(multiplier);
+                        }
+                    }
+                } else if ("global".equals(boosterSubCommand)) {
+                    // Multiplier suggestions
+                    String[] multipliers = {"1.0", "1.5", "2.0", "2.5", "3.0", "4.0", "5.0"};
+                    for (String multiplier : multipliers) {
+                        if (multiplier.startsWith(args[2])) {
+                            completions.add(multiplier);
+                        }
+                    }
+                } else if ("remove".equals(boosterSubCommand)) {
+                    // Target type (player/global)
+                    String[] targets = {"player", "global"};
+                    for (String target : targets) {
+                        if (target.toLowerCase().startsWith(args[2].toLowerCase())) {
+                            completions.add(target);
+                        }
+                    }
+                } else if ("list".equals(boosterSubCommand)) {
+                    // Player names for listing specific player boosters
+                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                        String playerName = player.getName();
+                        if (playerName != null && playerName.toLowerCase().startsWith(args[2].toLowerCase())) {
+                            completions.add(playerName);
+                        }
+                    }
+                } else if ("clear".equals(boosterSubCommand)) {
+                    // Target type (player/global)
+                    String[] targets = {"player", "global"};
+                    for (String target : targets) {
+                        if (target.toLowerCase().startsWith(args[2].toLowerCase())) {
+                            completions.add(target);
+                        }
+                    }
+                }
+            }
+        } else if (args.length == 4) {
+            String subCommand = args[0].toLowerCase();
+            
+            if ("booster".equals(subCommand)) {
+                String boosterSubCommand = args[1].toLowerCase();
+                if ("player".equals(boosterSubCommand)) {
+                    // Player names
+                    for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                        String playerName = player.getName();
+                        if (playerName != null && playerName.toLowerCase().startsWith(args[3].toLowerCase())) {
+                            completions.add(playerName);
+                        }
+                    }
+                } else if ("global".equals(boosterSubCommand)) {
+                    // Booster types
+                    String[] types = {"exp", "money"};
+                    for (String type : types) {
+                        if (type.toLowerCase().startsWith(args[3].toLowerCase())) {
+                            completions.add(type);
+                        }
+                    }
+                } else if ("remove".equals(boosterSubCommand)) {
+                    String target = args[2].toLowerCase();
+                    if ("player".equals(target)) {
+                        // Player names
+                        for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                            String playerName = player.getName();
+                            if (playerName != null && playerName.toLowerCase().startsWith(args[3].toLowerCase())) {
+                                completions.add(playerName);
+                            }
+                        }
+                    } else if ("global".equals(target)) {
+                        // Booster types
+                        String[] types = {"exp", "money"};
+                        for (String type : types) {
+                            if (type.toLowerCase().startsWith(args[3].toLowerCase())) {
+                                completions.add(type);
+                            }
+                        }
+                    }
+                } else if ("clear".equals(boosterSubCommand)) {
+                    String target = args[2].toLowerCase();
+                    if ("player".equals(target)) {
+                        // Player names
+                        for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                            String playerName = player.getName();
+                            if (playerName != null && playerName.toLowerCase().startsWith(args[3].toLowerCase())) {
+                                completions.add(playerName);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (args.length == 5) {
+            String subCommand = args[0].toLowerCase();
+            
+            if ("booster".equals(subCommand)) {
+                String boosterSubCommand = args[1].toLowerCase();
+                if ("player".equals(boosterSubCommand)) {
+                    // Booster types
+                    String[] types = {"exp", "money"};
+                    for (String type : types) {
+                        if (type.toLowerCase().startsWith(args[4].toLowerCase())) {
+                            completions.add(type);
+                        }
+                    }
+                } else if ("remove".equals(boosterSubCommand)) {
+                    String target = args[2].toLowerCase();
+                    if ("player".equals(target)) {
+                        // Booster types
+                        String[] types = {"exp", "money"};
+                        for (String type : types) {
+                            if (type.toLowerCase().startsWith(args[4].toLowerCase())) {
+                                completions.add(type);
+                            }
                         }
                     }
                 }
@@ -567,5 +706,287 @@ public class TaskForgeAdminCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(plugin.getConfigManager().getPrefix() + 
                               "&e" + playerName + "&a has &e$" + String.format("%.2f", pendingAmount) + "&a pending.");
         }
+    }
+    
+    /**
+     * Handle booster command
+     */
+    private void handleBoosterCommand(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            showBoosterHelp(sender);
+            return;
+        }
+        
+        String subCommand = args[1].toLowerCase();
+        
+        switch (subCommand) {
+            case "player":
+                if (args.length < 5) {
+                    sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_usage") + 
+                                     " /taskforgeadmin booster player <multiplier> <playerName> <type>");
+                    return;
+                }
+                setPlayerBooster(sender, args[2], args[3], args[4]);
+                break;
+                
+            case "global":
+                if (args.length < 4) {
+                    sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_usage") + 
+                                     " /taskforgeadmin booster global <multiplier> <type>");
+                    return;
+                }
+                setGlobalBooster(sender, args[2], args[3]);
+                break;
+                
+            case "remove":
+                if (args.length < 3) {
+                    showBoosterHelp(sender);
+                    return;
+                }
+                removeBooster(sender, args);
+                break;
+                
+            case "list":
+                listBoosters(sender, args);
+                break;
+                
+            case "clear":
+                clearBoosters(sender, args);
+                break;
+                
+            default:
+                showBoosterHelp(sender);
+                break;
+        }
+    }
+    
+    /**
+     * Show booster command help
+     */
+    private void showBoosterHelp(CommandSender sender) {
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&8&m----------&r " + 
+                          plugin.getConfigManager().getPrefix() + "&eBooster Commands &8&m----------"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin booster player <multiplier> <playerName> <type> &8- &7Set personal booster"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin booster global <multiplier> <type> &8- &7Set global booster"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin booster remove player <playerName> <type> &8- &7Remove personal booster"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin booster remove global <type> &8- &7Remove global booster"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin booster list [player] &8- &7List boosters"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin booster clear player <playerName> &8- &7Clear all personal boosters"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e/taskforgeadmin booster clear global &8- &7Clear all global boosters"));
+        sender.sendMessage(plugin.getConfigManager().translateColorCodes("&7Types: &eexp&7, &emoney&7, etc. Multipliers: &e1.0&7=normal, &e2.0&7=2x, &e3.0&7=3x"));
+    }
+    
+    /**
+     * Set a personal booster for a player
+     */
+    private void setPlayerBooster(CommandSender sender, String multiplierString, String playerName, String type) {
+        // Parse multiplier
+        double multiplier;
+        try {
+            multiplier = Double.parseDouble(multiplierString);
+            if (multiplier < 0) {
+                sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_number"));
+                return;
+            }
+        } catch (NumberFormatException e) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_number"));
+            return;
+        }
+        
+        // Find player
+        @SuppressWarnings("deprecation")
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("player_not_found"));
+            return;
+        }
+        
+        UUID playerUUID = offlinePlayer.getUniqueId();
+        plugin.getBoosterManager().setPersonalBooster(playerUUID, type, multiplier);
+        
+        sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                          "&aSet personal &e" + type + "&a booster for &e" + playerName + "&a to &e" + 
+                          String.format("%.1f", multiplier) + "x&a.");
+    }
+    
+    /**
+     * Set a global booster
+     */
+    private void setGlobalBooster(CommandSender sender, String multiplierString, String type) {
+        // Parse multiplier
+        double multiplier;
+        try {
+            multiplier = Double.parseDouble(multiplierString);
+            if (multiplier < 0) {
+                sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_number"));
+                return;
+            }
+        } catch (NumberFormatException e) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_number"));
+            return;
+        }
+        
+        plugin.getBoosterManager().setGlobalBooster(type, multiplier);
+        
+        sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                          "&aSet global &e" + type + "&a booster to &e" + 
+                          String.format("%.1f", multiplier) + "x&a.");
+    }
+    
+    /**
+     * Remove boosters
+     */
+    private void removeBooster(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            showBoosterHelp(sender);
+            return;
+        }
+        
+        String target = args[2].toLowerCase();
+        
+        if ("player".equals(target)) {
+            if (args.length < 5) {
+                sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_usage") + 
+                                 " /taskforgeadmin booster remove player <playerName> <type>");
+                return;
+            }
+            removePlayerBooster(sender, args[3], args[4]);
+        } else if ("global".equals(target)) {
+            if (args.length < 4) {
+                sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_usage") + 
+                                 " /taskforgeadmin booster remove global <type>");
+                return;
+            }
+            removeGlobalBooster(sender, args[3]);
+        } else {
+            showBoosterHelp(sender);
+        }
+    }
+    
+    /**
+     * Remove a personal booster from a player
+     */
+    private void removePlayerBooster(CommandSender sender, String playerName, String type) {
+        // Find player
+        @SuppressWarnings("deprecation")
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("player_not_found"));
+            return;
+        }
+        
+        UUID playerUUID = offlinePlayer.getUniqueId();
+        plugin.getBoosterManager().removePersonalBooster(playerUUID, type);
+        
+        sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                          "&aRemoved personal &e" + type + "&a booster from &e" + playerName + "&a.");
+    }
+    
+    /**
+     * Remove a global booster
+     */
+    private void removeGlobalBooster(CommandSender sender, String type) {
+        plugin.getBoosterManager().removeGlobalBooster(type);
+        
+        sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                          "&aRemoved global &e" + type + "&a booster.");
+    }
+    
+    /**
+     * List boosters
+     */
+    private void listBoosters(CommandSender sender, String[] args) {
+        if (args.length >= 3) {
+            // List specific player's boosters
+            String playerName = args[2];
+            @SuppressWarnings("deprecation")
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+            if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+                sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("player_not_found"));
+                return;
+            }
+            
+            UUID playerUUID = offlinePlayer.getUniqueId();
+            java.util.Map<String, Double> personalBoosters = plugin.getBoosterManager().getPersonalBoosters(playerUUID);
+            
+            sender.sendMessage(plugin.getConfigManager().translateColorCodes("&8&m----------&r " + 
+                              plugin.getConfigManager().getPrefix() + "&e" + playerName + "'s Boosters &8&m----------"));
+            
+            if (personalBoosters.isEmpty()) {
+                sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e" + playerName + "&a has no personal boosters."));
+            } else {
+                for (java.util.Map.Entry<String, Double> entry : personalBoosters.entrySet()) {
+                    sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e" + entry.getKey() + "&7: &a" + 
+                                      String.format("%.1f", entry.getValue()) + "x"));
+                }
+            }
+        } else {
+            // List global boosters
+            java.util.Map<String, Double> globalBoosters = plugin.getBoosterManager().getGlobalBoosters();
+            
+            sender.sendMessage(plugin.getConfigManager().translateColorCodes("&8&m----------&r " + 
+                              plugin.getConfigManager().getPrefix() + "&eGlobal Boosters &8&m----------"));
+            
+            for (java.util.Map.Entry<String, Double> entry : globalBoosters.entrySet()) {
+                if (entry.getValue() != 1.0) {
+                    sender.sendMessage(plugin.getConfigManager().translateColorCodes("&e" + entry.getKey() + "&7: &a" + 
+                                      String.format("%.1f", entry.getValue()) + "x"));
+                }
+            }
+        }
+    }
+    
+    /**
+     * Clear boosters
+     */
+    private void clearBoosters(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            showBoosterHelp(sender);
+            return;
+        }
+        
+        String target = args[2].toLowerCase();
+        
+        if ("player".equals(target)) {
+            if (args.length < 4) {
+                sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("invalid_usage") + 
+                                 " /taskforgeadmin booster clear player <playerName>");
+                return;
+            }
+            clearPlayerBoosters(sender, args[3]);
+        } else if ("global".equals(target)) {
+            clearGlobalBoosters(sender);
+        } else {
+            showBoosterHelp(sender);
+        }
+    }
+    
+    /**
+     * Clear all personal boosters from a player
+     */
+    private void clearPlayerBoosters(CommandSender sender, String playerName) {
+        // Find player
+        @SuppressWarnings("deprecation")
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline()) {
+            sender.sendMessage(plugin.getConfigManager().getPrefixedMessage("player_not_found"));
+            return;
+        }
+        
+        UUID playerUUID = offlinePlayer.getUniqueId();
+        plugin.getBoosterManager().clearPersonalBoosters(playerUUID);
+        
+        sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                          "&aCleared all personal boosters from &e" + playerName + "&a.");
+    }
+    
+    /**
+     * Clear all global boosters
+     */
+    private void clearGlobalBoosters(CommandSender sender) {
+        plugin.getBoosterManager().clearGlobalBoosters();
+        
+        sender.sendMessage(plugin.getConfigManager().getPrefix() + 
+                          "&aCleared all global boosters.");
     }
 }

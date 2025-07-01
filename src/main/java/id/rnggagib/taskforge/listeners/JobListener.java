@@ -373,6 +373,10 @@ public class JobListener implements Listener {
         double experience = objective.getExperience();
         double money = objective.getMoney();
         
+        // Apply boosters to the rewards
+        experience = plugin.getBoosterManager().applyBooster(player, "exp", experience);
+        money = plugin.getBoosterManager().applyBooster(player, "money", money);
+        
         // Add experience (always given if > 0)
         if (experience > 0) {
             plugin.getPlayerDataManager().addJobExperience(player.getUniqueId(), jobName, experience);
@@ -405,8 +409,9 @@ public class JobListener implements Listener {
         
         // Send notification using the existing system
         if (experience > 0 || money > 0) {
-            // Use the existing notification system which properly handles both salary and direct payment
-            plugin.getNotificationManager().sendJobRewardNotification(player, jobName, objective);
+            // Create a temporary JobObjective with boosted values for notification display
+            JobObjective boostedObjective = new JobObjective(experience, money, objective.getChance());
+            plugin.getNotificationManager().sendJobRewardNotification(player, jobName, boostedObjective);
         }
     }
 }
